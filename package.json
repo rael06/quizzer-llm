@@ -1,0 +1,24 @@
+{
+	"name": "quizzer-llm",
+	"version": "1.0.0",
+	"description": "A quizz-maker featured by LLM",
+	"scripts": {
+		"postinstall": "(cd ui && npm install) && (cd api && npm install)",
+		"build": "cd ui && npm run build",
+		"postbuild": "npm run copy-files",
+		"copy-files": "copyfiles -u 2 \"./ui/build/**/*\" \"./api/src/public\"",
+		"start:dev": "cd api && npm run start:dev",
+		"start": "cd api && npm run start",
+		"watch:front": "cd ui && npm run start",
+		"watch:back": "cd api && npm run watch",
+		"format": "prettier --write \"**/*.{tsx,ts,css,scss}\" --config ./prettier.config.js",
+		"test": "prettier --find-config-path"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"copyfiles": "^2.4.1",
+		"prettier": "^3.2.2"
+	}
+}
