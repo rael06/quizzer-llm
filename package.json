@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "A quizz-maker featured by LLM",
 	"scripts": {
-		"postinstall": "(cd ui && npm install) && (cd api && npm install)",
+		"postinstall": "cd ui && npm install && cd ../api && npm install",
 		"build": "cd ui && npm run build",
 		"postbuild": "npm run copy-files",
 		"copy-files": "copyfiles -u 2 \"./ui/build/**/*\" \"./api/src/public\"",

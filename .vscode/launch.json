@@ -12,7 +12,8 @@
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "sourceMaps": true,
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/api"
     }
   ]
 }

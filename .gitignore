@@ -105,7 +105,7 @@ coverage
 # Misc
 ############################
 
-ui/public
+ui/build
 api/src/public
 
 .env
