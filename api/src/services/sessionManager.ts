@@ -1,5 +1,5 @@
 import { Session } from "../models";
-import { buildQuestionInstruction } from "./model";
+import { buildQuestionInstructions } from "./model";
 import { v4 as uuidv4 } from "uuid";
 
 const sessions = new Map<string, Session>();
@@ -7,12 +7,12 @@ const sessions = new Map<string, Session>();
 export function createSession({
   language,
   thematic,
-}: Parameters<typeof buildQuestionInstruction>[0]): Session {
+}: Parameters<typeof buildQuestionInstructions>[0]): Session {
   const id = uuidv4();
   const session: Session = {
     id,
     language,
-    instruction: buildQuestionInstruction({ language, thematic }),
+    instructions: buildQuestionInstructions({ language, thematic }),
     questions: [],
   };
 

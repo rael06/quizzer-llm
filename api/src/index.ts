@@ -77,6 +77,8 @@ server.get("/api/model/question", async (request, reply) => {
 
   const question = await askQuestion({ sessionId });
 
+  if (!question) return reply.status(500).send("Error generating question");
+
   return reply.send(question);
 });
 
@@ -93,6 +95,8 @@ server.post("/api/model/answer", async (request, reply) => {
     .parse(request.body).answer;
 
   const feedback = await answerQuestion({ sessionId, answer });
+
+  if (!feedback) return reply.status(500).send("Error verifying answer");
 
   return reply.send(feedback);
 });

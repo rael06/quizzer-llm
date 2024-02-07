@@ -15,6 +15,6 @@ export type Question = {
 export type Session = {
   id: string;
   language: string;
-  instruction: string;
+  instructions: { role: "system"; content: string }[];
   questions: Question[];
 };

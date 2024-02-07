@@ -61,7 +61,7 @@ function QuizzPage() {
     <Box className={classes.root}>
       <Box className={classes.question}>
         <Typography>
-          Score : {score.current}/{score.max}
+          Score : {score.current ?? 0}/{score.max ?? 0}
         </Typography>
         <LinearProgress
           sx={{ visibility: isLoadingQuestion ? "visible" : "hidden" }}

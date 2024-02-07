@@ -1,1 +1,1 @@
-export const applicationApiUrl = "http://quizzer-llm.rael-calitro.ovh/api";
+export const applicationApiUrl = "https://quizzer-llm.rael-calitro.ovh/api";
