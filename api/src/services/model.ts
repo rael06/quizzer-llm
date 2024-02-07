@@ -62,9 +62,12 @@ export async function askQuestion({ sessionId }: { sessionId: string }) {
   console.log("\n");
   const question: Question = {
     ...z
-      .preprocess((v) => {
-        return JSON.parse(String(v));
-      }, z.object({ question: z.string(), propositions: z.array(z.string()) }))
+      .preprocess(
+        (v) => {
+          return JSON.parse(String(v));
+        },
+        z.object({ question: z.string(), propositions: z.array(z.string()) }),
+      )
       .parse(completeModelQuestion),
     id: uuidV4(),
     answer: null,
@@ -119,7 +122,7 @@ export async function answerQuestion({
             feedback: z.string(),
             isCorrect: z.boolean(),
             expectedAnswer: z.string(),
-          })
+          }),
         )
         .parse(completeFeedback),
       answer,
