@@ -8,11 +8,18 @@ import { createSession, getSession } from "./services/sessionManager";
 import { answerQuestion, askQuestion } from "./services/model";
 import { z } from "zod";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const server = fastify({ logger: true });
+const server = fastify({
+  logger: true,
+  https: {
+    key: fs.readFileSync(path.join(__dirname, "privkey.pem")),
+    cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
+  },
+});
 server.register(fastifyCookie);
 
 server.register(fastifyCors, {
