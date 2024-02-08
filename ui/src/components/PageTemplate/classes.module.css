@@ -8,8 +8,8 @@
 
   & > header {
     display: flex;
-    height: 50px;
     padding: 8px 16px;
+    margin-bottom: 8px;
   }
 
   & main {
@@ -21,7 +21,7 @@
 
   & footer {
     display: flex;
-    height: 50px;
     padding: 8px 16px;
+    margin-top: 8px;
   }
 }
