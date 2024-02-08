@@ -22,10 +22,12 @@ const router = createBrowserRouter([
           <ErrorBoundary
             fallback={
               <>
-                <Typography>
+                <Typography mb={2}>
                   Désolé, quelque chose s'est mal passé, revenez plus tard.
                 </Typography>
-                <Link to="/">Accueil</Link>
+                <Link to="/">
+                  <Typography>Accueil</Typography>
+                </Link>
               </>
             }
           >
