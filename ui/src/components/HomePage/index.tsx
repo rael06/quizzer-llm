@@ -13,7 +13,7 @@ function HomePage() {
   }, []);
 
   const startQuizz = useCallback(async () => {
-    const thematic = thematicInputRef.current?.value ?? "";
+    const thematic = thematicInputRef.current?.value ?? "Générale";
     await createSession({ thematic, language: "french" });
     navigate("/quizz", { replace: true });
   }, [navigate]);
@@ -23,6 +23,7 @@ function HomePage() {
       <TextField
         inputRef={thematicInputRef}
         label="Thématique"
+        placeholder="Générale"
         variant="outlined"
       />
 
