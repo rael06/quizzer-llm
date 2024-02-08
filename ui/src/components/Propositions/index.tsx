@@ -44,6 +44,7 @@ function Propositions({ question, onChoose, isLoadingFeedback }: Props) {
                 ? {
                     "&:disabled": {
                       backgroundColor: theme.palette[buttonColor].main,
+                      color: theme.palette[buttonColor].contrastText,
                     },
                   }
                 : undefined
