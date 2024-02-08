@@ -1,6 +1,13 @@
 .root {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
   margin-left: auto;
+  align-items: flex-end;
+}
+
+.link {
+  display: flex;
+  gap: 8px;
   align-items: center;
 }
