@@ -7,10 +7,9 @@
 		"build": "cd ui && npm run build",
 		"postbuild": "npm run copy-files",
 		"copy-files": "copyfiles -u 2 \"./ui/build/**/*\" \"./api/src/public\"",
-		"start:dev": "cd api && npm run start:dev",
 		"start": "cd api && npm run start",
-		"watch:front": "cd ui && npm run start",
-		"watch:back": "cd api && npm run watch",
+		"start:ui": "cd ui && npm run start",
+		"start:api": "cd api && npm run start",
 		"format": "prettier --write \"**/*.{tsx,ts,css,scss}\" --config ./prettier.config.js",
 		"test": "prettier --find-config-path"
 	},

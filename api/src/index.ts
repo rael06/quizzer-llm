@@ -1,4 +1,4 @@
-// import "dotenv/config";
+import "dotenv/config";
 import fastify from "fastify";
 import fastifyCookie from "@fastify/cookie";
 import fastifyCors from "@fastify/cors";
@@ -10,16 +10,19 @@ import { z } from "zod";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import assert from "assert";
+import { EnvVariables } from "./EnvVariables";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const server = fastify({
   logger: true,
-  https: {
-    key: fs.readFileSync(path.join(__dirname, "privkey.pem")),
-    cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
-  },
+  ...(EnvVariables.Environment === "production" && {
+    https: {
+      key: fs.readFileSync(path.join(__dirname, "privkey.pem")),
+      cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
+    },
+  }),
 });
 server.register(fastifyCookie);
 
@@ -114,7 +117,10 @@ server.setNotFoundHandler((request, reply) => {
   }
 });
 
-server.listen({ host: "0.0.0.0", port: 3099 }, (err, address) => {
-  if (err) throw err;
-  server.log.info(`server listening on ${address}`);
-});
+server.listen(
+  { host: EnvVariables.Host, port: EnvVariables.Port },
+  (err, address) => {
+    if (err) throw err;
+    server.log.info(`server listening on ${address}`);
+  },
+);
