@@ -1,6 +1,5 @@
 import { Ollama } from "ollama";
-
-export const ollamaInstance = (async () => {})();
+import { EnvVariables } from "../EnvVariables";
 
 export class OllamaService {
   private static _instance: Ollama;
@@ -10,7 +9,7 @@ export class OllamaService {
   public static async getInstance(): Promise<Ollama> {
     if (!this._instance) {
       const { Ollama } = await import("ollama");
-      this._instance = new Ollama({ host: "http://localhost:11434" });
+      this._instance = new Ollama({ host: EnvVariables.OllamaApiUrl });
     }
     return this._instance;
   }

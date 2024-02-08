@@ -29,7 +29,7 @@ server.register(fastifyCookie);
 server.register(fastifyCors, {
   origin: [
     "http://localhost:3001",
-    "http://localhost:3000",
+    "http://localhost:3099",
     "http://quizzer-llm.rael-calitro.ovh",
     "https://quizzer-llm.rael-calitro.ovh",
   ],
