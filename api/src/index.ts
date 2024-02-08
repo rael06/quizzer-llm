@@ -9,6 +9,7 @@ import { answerQuestion, askQuestion } from "./services/model";
 import { z } from "zod";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import assert from "assert";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,7 +78,7 @@ server.get("/api/model/question", async (request, reply) => {
 
   const question = await askQuestion({ sessionId });
 
-  if (!question) return reply.status(500).send("Error generating question");
+  assert(question, "Error generating question");
 
   return reply.send(question);
 });
@@ -96,7 +97,7 @@ server.post("/api/model/answer", async (request, reply) => {
 
   const feedback = await answerQuestion({ sessionId, answer });
 
-  if (!feedback) return reply.status(500).send("Error verifying answer");
+  assert(feedback, "Error verifying answer");
 
   return reply.send(feedback);
 });
@@ -106,12 +107,9 @@ server.get("/api/health", (request, reply) => {
 });
 
 server.setNotFoundHandler((request, reply) => {
-  // Vérifie si l'URL commence par /api
   if (request.raw.url?.startsWith("/api")) {
-    // Si c'est une route API non trouvée, vous pouvez choisir de renvoyer une erreur JSON par exemple
     reply.status(404).send({ error: "API route not found" });
   } else {
-    // Pour toutes les autres routes, servir index.html
     reply.sendFile("index.html");
   }
 });

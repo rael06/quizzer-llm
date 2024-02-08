@@ -16,7 +16,7 @@ function Propositions({ question, onChoose, isLoadingFeedback }: Props) {
       (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         onChoose(proposition);
       },
-    [onChoose]
+    [onChoose],
   );
 
   return (
@@ -26,8 +26,7 @@ function Propositions({ question, onChoose, isLoadingFeedback }: Props) {
         const isPropositionSelected =
           isQuestionAnswered && question.answer?.answer === proposition;
         const isPropositionCorrect =
-          isQuestionAnswered &&
-          question.answer?.answer === question.answer?.expectedAnswer;
+          isQuestionAnswered && question.answer?.isCorrect;
 
         const buttonColor =
           (!isPropositionSelected && "primary") ||
