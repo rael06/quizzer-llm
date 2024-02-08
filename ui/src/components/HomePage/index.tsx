@@ -4,8 +4,10 @@ import classes from "./classes.module.css";
 import { useNavigate } from "react-router-dom";
 import { clearAllCookies } from "../../utils/cookies";
 import { createSession } from "../../api/application/session";
+import { useLang } from "../../contexts/lang/context";
 
 function HomePage() {
+  const { dictionary } = useLang();
   const navigate = useNavigate();
   const thematicInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -22,35 +24,22 @@ function HomePage() {
     <Box className={classes.root}>
       <TextField
         inputRef={thematicInputRef}
-        label="Thématique"
-        placeholder="Générale"
+        label={dictionary.home.input.label}
+        placeholder={dictionary.home.input.placeholder}
         variant="outlined"
       />
 
       <Button onClick={startQuizz} variant="contained">
-        Démarrer le quizz
+        {dictionary.home.startQuizz}
       </Button>
 
-      <Typography variant="body1">
-        Passionné de quizz ? Explorez diverses thématiques ici. En l'absence de
-        choix, un quizz général sera proposé. Bon Quizz ! 🎉
-      </Typography>
+      <Typography variant="body1">{dictionary.home.description1}</Typography>
 
-      <Typography variant="body1">
-        Attention : les questions sont générées par un modèle de langage dans un
-        langage français approximatif et peuvent ne pas être exactes. Elles ne
-        doivent pas être considérées comme une source fiable.
-      </Typography>
+      <Typography variant="body1">{dictionary.home.description2}</Typography>
 
-      <Typography variant="body1">
-        La responsabilité de l'utilisation du site et des résultats générés ne
-        peut être engagée.
-      </Typography>
+      <Typography variant="body1">{dictionary.home.description3}</Typography>
 
-      <Typography variant="body1">
-        L'efficacité du modèle est remarquable et mérite d'être partagée. Pour
-        toute question, contactez-moi.
-      </Typography>
+      <Typography variant="body1">{dictionary.home.description4}</Typography>
     </Box>
   );
 }

@@ -1,4 +1,19 @@
 .root {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.description {
+  display: flex;
   flex-direction: column;
+}
+
+.lang {
+  display: flex;
+}
+
+.select {
+  min-width: 60px;
 }

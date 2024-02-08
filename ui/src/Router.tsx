@@ -6,11 +6,17 @@ import Page404 from "./components/Page404";
 import QuizzPage from "./components/QuizzPage";
 import { ErrorBoundary } from "react-error-boundary";
 import { Typography } from "@mui/material";
+import { LangContextProvider } from "./contexts/lang/context";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <PageTemplate />,
+    element: (
+      <LangContextProvider>
+        <PageTemplate />
+      </LangContextProvider>
+    ),
+
     children: [
       {
         path: "",

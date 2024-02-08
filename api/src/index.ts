@@ -45,14 +45,13 @@ server.register(staticPlugin, {
 });
 
 server.post("/api/sessions", async (request, reply) => {
-  const { language, thematic } = z
+  const { thematic } = z
     .object({
-      language: z.string(),
       thematic: z.string(),
     })
     .parse(request.body);
 
-  const session = createSession({ language, thematic });
+  const session = createSession(thematic);
   reply.setCookie("sessionId", session.id, {
     httpOnly: false,
     path: "/",
@@ -79,7 +78,13 @@ server.get("/api/model/question", async (request, reply) => {
     return reply.status(400).send({ error: "Session not found" });
   }
 
-  const question = await askQuestion({ sessionId });
+  const language = z
+    .object({
+      language: z.string(),
+    })
+    .parse(request.query).language;
+
+  const question = await askQuestion({ sessionId, language });
 
   assert(question, "Error generating question");
 
@@ -92,13 +97,19 @@ server.post("/api/model/answer", async (request, reply) => {
     return reply.status(400).send({ error: "Session not found" });
   }
 
+  const language = z
+    .object({
+      language: z.string(),
+    })
+    .parse(request.query).language;
+
   const answer = z
     .object({
       answer: z.string(),
     })
     .parse(request.body).answer;
 
-  const feedback = await answerQuestion({ sessionId, answer });
+  const feedback = await answerQuestion({ sessionId, language, answer });
 
   assert(feedback, "Error verifying answer");
 

@@ -8,8 +8,10 @@ import { ErrorBoundary } from "react-error-boundary";
 import Feedback from "../Feedback";
 import { fetchSession } from "../../api/application/session";
 import { fetchQuestion, postAnswer } from "../../api/application/model";
+import { useLang } from "../../contexts/lang/context";
 
 function QuizzPage() {
+  const { lang, dictionary } = useLang();
   const navigate = useNavigate();
   const [question, setQuestion] = useState<Question | null>(null);
   const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(false);
@@ -22,13 +24,14 @@ function QuizzPage() {
   const askQuestion = useCallback(async () => {
     setIsLoadingQuestion(true);
     setQuestion(null);
+
     try {
-      const data = await fetchQuestion();
+      const data = await fetchQuestion(lang);
       setQuestion(data);
     } finally {
       setIsLoadingQuestion(false);
     }
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     (async () => await askQuestion())();
@@ -50,18 +53,22 @@ function QuizzPage() {
     };
   }, [session?.questions]);
 
-  const answerQuestion = useCallback(async (proposition: string) => {
-    setIsLoadingFeedback(true);
-    const data = await postAnswer(proposition);
-    setQuestion(data);
-    setIsLoadingFeedback(false);
-  }, []);
+  const answerQuestion = useCallback(
+    async (proposition: string) => {
+      setIsLoadingFeedback(true);
+      const data = await postAnswer(lang, proposition);
+      setQuestion(data);
+      setIsLoadingFeedback(false);
+    },
+    [lang],
+  );
 
   return (
     <Box className={classes.root}>
       <Box className={classes.question}>
         <Typography>
-          Score : {score.current ?? 0}/{score.max ?? 0}
+          {dictionary.quizz.score}
+          {score.current ?? 0}/{score.max ?? 0}
         </Typography>
         <LinearProgress
           sx={{ visibility: isLoadingQuestion ? "visible" : "hidden" }}
@@ -73,12 +80,7 @@ function QuizzPage() {
               sx={{ visibility: isLoadingFeedback ? "visible" : "hidden" }}
             />
             <ErrorBoundary
-              fallback={
-                <Typography>
-                  Désolé, une erreur est survenue, veuillez passer à la question
-                  suivante.
-                </Typography>
-              }
+              fallback={<Typography>{dictionary.quizz.error}</Typography>}
             >
               <Propositions
                 question={question}
@@ -99,14 +101,14 @@ function QuizzPage() {
           variant="contained"
           disabled={isLoadingQuestion}
         >
-          Redémarrer
+          {dictionary.quizz.action.home}
         </Button>
         <Button
           onClick={askQuestion}
           variant="contained"
           disabled={isLoadingQuestion}
         >
-          Suivant
+          {dictionary.quizz.action.next}
         </Button>
       </Box>
     </Box>

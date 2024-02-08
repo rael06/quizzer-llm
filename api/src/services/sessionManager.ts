@@ -1,18 +1,13 @@
 import { Session } from "../models";
-import { buildQuestionInstructions } from "./model";
 import { v4 as uuidv4 } from "uuid";
 
 const sessions = new Map<string, Session>();
 
-export function createSession({
-  language,
-  thematic,
-}: Parameters<typeof buildQuestionInstructions>[0]): Session {
+export function createSession(thematic: string): Session {
   const id = uuidv4();
   const session: Session = {
     id,
-    language,
-    instructions: buildQuestionInstructions({ language, thematic }),
+    thematic,
     questions: [],
   };
 
