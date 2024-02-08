@@ -32,7 +32,7 @@ export function buildQuestionInstructions({
     - I must never use \`\`\`json ... \`\`\` surroundings key word.
     - This is a list of questions that you must never ask again or something too similar, but use them as examples to understand the format of the question and the propositions:
       - {"question":"Quelle est la capitale de la France ?","propositions":["Lyon","Marseille","Paris","Cannes"]}
-      - {"question":"Quelle est le pays le plus peuplé du monde ?","propositions":["L'Inde","La Chine","La Russie","La France"]}
+      - {"question":"Quelle est le pays le plus peuplé du monde ?","propositions":["Inde","Chine","Russie","France"]}
     `,
     },
   ];
@@ -52,11 +52,10 @@ function getFeedbackInstructions({
       role: "system",
       content: `
         - I must speak in ${language} and I must be careful with the spelling and the grammar.
-        - Given this question: ${question}.
-        - Analyze its user's answer which is: '${answer}'.
-        - Consider a partially correct answer as correct.
-        - Then I must give a feedback in ${language} to the user in a JSON format as {"feedback": <My feedback to the answer as string, but I must never use double quotes inside the string itself>,"expectedAnswer": <The exact correct answer strictly among propositions case sensitive as a string>,"isCorrect": <Boolean, true if correct or false>}, and stop.
-        - The feedback field in the JSON can be exhaustive and deliver some good informations about the answer.
+        - Given this question in ${language}: ${question}.
+        - Analyze its user's answer which is in ${language}: '${answer}'.
+        - Regarding the question: '${question}' and the answer: '${answer}', I must give a feedback in ${language} to the user in a JSON format as {"feedback": <My feedback to the answer as string, but I must never use double quotes inside the string itself>,"expectedAnswer": <The exact correct answer strictly among propositions case sensitive as a string>,"isCorrect": <Boolean, true if correct or false>}, and stop.
+        - The feedback field in the JSON can be exhaustive and deliver some more informations about the answer.
         - I must never use \`\`\`json ... \`\`\` surroundings key word.
         `,
     },
