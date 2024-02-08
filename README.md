@@ -54,7 +54,7 @@ If you want to run the UI application and API server separately locally, you can
 
 If you want to run the application via docker, you just have to run:
 
-- `docker build -t quizzer-llm`
+- `docker build -t quizzer-llm .`
 - `docker run -d -p 3099:3099 --name quizzer-llm quizzer-llm`
 
 Otherwise:
