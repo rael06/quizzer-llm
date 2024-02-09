@@ -1,12 +1,5 @@
 import assert from "assert";
-import {
-  createContext,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, memo, useCallback, useContext, useState } from "react";
 import { Question } from "../../models";
 import { useLang } from "../../contexts/lang/context";
 import { fetchQuestion, postAnswer } from "../../api/application/model";
