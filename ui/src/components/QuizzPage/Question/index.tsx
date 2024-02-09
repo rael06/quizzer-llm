@@ -1,7 +1,7 @@
 import { Box, LinearProgress, Typography } from "@mui/material";
 import { memo } from "react";
 import classes from "./classes.module.css";
-import { useQuestion } from "../context";
+import { useQuestion } from "../../../contexts/question/context";
 import Propositions from "../../Propositions";
 import assert from "assert";
 

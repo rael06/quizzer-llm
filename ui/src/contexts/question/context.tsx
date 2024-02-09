@@ -1,7 +1,7 @@
 import assert from "assert";
 import { createContext, memo, useCallback, useContext, useState } from "react";
 import { Question } from "../../models";
-import { useLang } from "../../contexts/lang/context";
+import { useLang } from "../lang/context";
 import { fetchQuestion, postAnswer } from "../../api/application/model";
 import { useNavigate } from "react-router-dom";
 

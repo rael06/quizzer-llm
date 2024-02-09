@@ -55,8 +55,8 @@ function getFeedbackInstructions({
       role: "system",
       content: `
     - I must use the language selected by user and be careful with the spelling and the grammar.
-    - Given a question in the language selected by the user.
-    - I must analyze the user's answer.
+    - Given a question and its propositions in this JSON format: {"question":"Which animal is known for its long neck and distinctive spots?","propositions":["Giraffe","Zebra","Elephant","Rhinoceros"]}
+    - I must analyze the user's answer and it to the most probable proposition in the language selected by the user.
     - I must give a feedback to the user in a JSON format as {"feedback": <My feedback to the answer as string, but I must never use double quotes inside the string itself>,"expectedAnswer": <The exact correct answer strictly among propositions case sensitive as a string>,"isCorrect": <Boolean, true if correct or false>}, and stop.
     - The feedback field in the JSON can be exhaustive and deliver some more informations about the answer.
     - I must never use \`\`\`json ... \`\`\` surroundings key word.

@@ -10,11 +10,13 @@ import { memo, useCallback } from "react";
 import classes from "./classes.module.css";
 import { Lang, useLang } from "../../contexts/lang/context";
 import { z } from "zod";
+import { useQuestion } from "../../contexts/question/context";
 
 const selectStyle = { width: 60, fontSize: 12 };
 
 function Header() {
   const { lang, updateLang, dictionary } = useLang();
+  const { isLoadingQuestion, isLoadingFeedback } = useQuestion();
   const theme = useTheme();
   const handleLangChange = useCallback(
     (e: SelectChangeEvent<Lang>) => {
@@ -44,6 +46,7 @@ function Header() {
 
       <Box className={classes.lang}>
         <Select
+          disabled={isLoadingQuestion || isLoadingFeedback}
           value={lang}
           onChange={handleLangChange}
           size="small"

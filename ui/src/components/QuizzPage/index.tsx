@@ -6,7 +6,7 @@ import { Session } from "../../models";
 import Feedback from "../Feedback";
 import { fetchSession } from "../../api/application/session";
 import { useLang } from "../../contexts/lang/context";
-import { useQuestion } from "./context";
+import { useQuestion } from "../../contexts/question/context";
 import Question from "./Question";
 import { ErrorBoundary } from "react-error-boundary";
 

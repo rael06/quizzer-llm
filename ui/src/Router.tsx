@@ -5,14 +5,16 @@ import HomePage from "./components/HomePage";
 import Page404 from "./components/Page404";
 import QuizzPage from "./components/QuizzPage";
 import { LangContextProvider } from "./contexts/lang/context";
-import { QuestionContextProvider } from "./components/QuizzPage/context";
+import { QuestionContextProvider } from "./contexts/question/context";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <LangContextProvider>
-        <PageTemplate />
+        <QuestionContextProvider>
+          <PageTemplate />
+        </QuestionContextProvider>
       </LangContextProvider>
     ),
 
@@ -23,11 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "quizz",
-        element: (
-          <QuestionContextProvider>
-            <QuizzPage />
-          </QuestionContextProvider>
-        ),
+        element: <QuizzPage />,
       },
       {
         path: "*",
