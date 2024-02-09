@@ -28,7 +28,7 @@ export const frDictionary: Dictionary = {
   quizz: {
     score: "Score : ",
     error:
-      "Désolé, une erreur est survenue, veuillez passer à la question suivante.",
+      "Désolé, la génération de question valide a echoué, veuillez passer à la question suivante.",
     action: {
       home: "Accueil",
       next: "Suivante",

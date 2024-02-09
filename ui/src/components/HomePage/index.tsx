@@ -10,13 +10,14 @@ function HomePage() {
   const { dictionary } = useLang();
   const navigate = useNavigate();
   const thematicInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     clearAllCookies();
   }, []);
 
   const startQuizz = useCallback(async () => {
-    const thematic = thematicInputRef.current?.value ?? "Générale";
-    await createSession({ thematic, language: "french" });
+    const thematic = thematicInputRef.current?.value ?? "General";
+    await createSession(thematic);
     navigate("/quizz", { replace: true });
   }, [navigate]);
 

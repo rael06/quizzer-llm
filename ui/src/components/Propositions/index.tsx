@@ -2,6 +2,7 @@ import { Box, Button, useTheme } from "@mui/material";
 import { memo, useCallback } from "react";
 import classes from "./classes.module.css";
 import { Question } from "../../models";
+import assert from "assert";
 
 type Props = {
   question: Question;
@@ -18,6 +19,8 @@ function Propositions({ question, onChoose, isLoadingFeedback }: Props) {
       },
     [onChoose],
   );
+
+  assert(question, "Question is required");
 
   return (
     <Box className={classes.root}>

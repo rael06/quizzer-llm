@@ -1,41 +1,29 @@
-import { Box, Button, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./classes.module.css";
-import { Question, Session } from "../../models";
-import Propositions from "../Propositions";
-import { ErrorBoundary } from "react-error-boundary";
+import { Session } from "../../models";
 import Feedback from "../Feedback";
 import { fetchSession } from "../../api/application/session";
-import { fetchQuestion, postAnswer } from "../../api/application/model";
 import { useLang } from "../../contexts/lang/context";
+import { useQuestion } from "./context";
+import Question from "./Question";
+import { ErrorBoundary } from "react-error-boundary";
 
 function QuizzPage() {
-  const { lang, dictionary } = useLang();
+  const { dictionary } = useLang();
   const navigate = useNavigate();
-  const [question, setQuestion] = useState<Question | null>(null);
-  const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(false);
-  const [isLoadingFeedback, setIsLoadingFeedback] = useState<boolean>(false);
+  const { question, askQuestion, isLoadingQuestion } = useQuestion();
+
+  const [session, setSession] = useState<Session | null>(null);
 
   const goHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
-  const askQuestion = useCallback(async () => {
-    setIsLoadingQuestion(true);
-    setQuestion(null);
-
-    fetchQuestion(lang)
-      .then((data) => setQuestion(data))
-      .catch((error) => error.message === "Session not found" && goHome())
-      .finally(() => setIsLoadingQuestion(false));
-  }, [lang, goHome]);
-
   useEffect(() => {
     askQuestion();
   }, [askQuestion]);
-
-  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     fetchSession()
@@ -50,16 +38,6 @@ function QuizzPage() {
     };
   }, [session?.questions]);
 
-  const answerQuestion = useCallback(
-    (proposition: string) => {
-      setIsLoadingFeedback(true);
-      postAnswer(lang, proposition)
-        .then(setQuestion)
-        .then(() => setIsLoadingFeedback(false));
-    },
-    [lang],
-  );
-
   return (
     <Box className={classes.root}>
       <Box className={classes.question}>
@@ -67,26 +45,12 @@ function QuizzPage() {
           {dictionary.quizz.score}
           {score.current ?? 0}/{score.max ?? 0}
         </Typography>
-        <LinearProgress
-          sx={{ visibility: isLoadingQuestion ? "visible" : "hidden" }}
-        />
-        {question !== null && (
-          <>
-            <Typography>{question.question}</Typography>
-            <LinearProgress
-              sx={{ visibility: isLoadingFeedback ? "visible" : "hidden" }}
-            />
-            <ErrorBoundary
-              fallback={<Typography>{dictionary.quizz.error}</Typography>}
-            >
-              <Propositions
-                question={question}
-                onChoose={answerQuestion}
-                isLoadingFeedback={isLoadingFeedback}
-              />
-            </ErrorBoundary>
-          </>
-        )}
+
+        <ErrorBoundary
+          fallback={<Typography>{dictionary.quizz.error}</Typography>}
+        >
+          <Question />
+        </ErrorBoundary>
       </Box>
 
       {question?.answer && <Feedback answer={question.answer} />}

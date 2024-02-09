@@ -4,8 +4,8 @@ import { Lang } from "../../contexts/lang/context";
 import { Question } from "../../models";
 
 const englishLangTranslation = {
-  [Lang.En]: "english",
-  [Lang.Fr]: "french",
+  [Lang.En]: "English",
+  [Lang.Fr]: "French",
 } as const;
 
 export async function fetchQuestion(lang: Lang): Promise<Question> {

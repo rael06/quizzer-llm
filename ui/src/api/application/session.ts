@@ -2,13 +2,7 @@ import assert from "assert";
 import { applicationApiUrl } from ".";
 import { Session } from "../../models";
 
-export async function createSession({
-  thematic,
-  language,
-}: {
-  thematic: string;
-  language: string;
-}): Promise<void> {
+export async function createSession(thematic: string): Promise<void> {
   const response = await fetch(`${applicationApiUrl}/sessions`, {
     method: "POST",
     credentials: "include",
@@ -17,7 +11,6 @@ export async function createSession({
     },
     body: JSON.stringify({
       thematic,
-      language,
     }),
   });
   const json = await response.json();

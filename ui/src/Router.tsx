@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import Page404 from "./components/Page404";
 import QuizzPage from "./components/QuizzPage";
 import { LangContextProvider } from "./contexts/lang/context";
+import { QuestionContextProvider } from "./components/QuizzPage/context";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "quizz",
-        element: <QuizzPage />,
+        element: (
+          <QuestionContextProvider>
+            <QuizzPage />
+          </QuestionContextProvider>
+        ),
       },
       {
         path: "*",
