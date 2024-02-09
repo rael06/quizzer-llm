@@ -11,7 +11,8 @@
 		"start:ui": "cd ui && npm run start",
 		"start:api": "cd api && npm run start",
 		"format": "prettier --write \"**/*.{tsx,ts,css,scss}\" --config ./prettier.config.js",
-		"test": "prettier --find-config-path"
+		"test": "prettier --find-config-path",
+		"deploy": "node deploy.js"
 	},
 	"keywords": [],
 	"author": "",
