@@ -1,5 +1,5 @@
-import { Box, IconButton, TextField } from "@mui/material";
-import { memo, useCallback, useState } from "react";
+import { Box, IconButton, TextField, useTheme } from "@mui/material";
+import { memo, useCallback, useMemo, useState } from "react";
 import classes from "./classes.module.css";
 import { Question } from "../../../../models";
 import {
@@ -16,10 +16,13 @@ type Props = {
 };
 
 function AnswerInput({ question, onConfirm, isLoadingFeedback }: Props) {
+  const theme = useTheme();
   const { dictionary } = useLang();
   const [proposition, setProposition] = useState("");
+  const [isPropositionSubmitted, setIsPropositionSubmitted] = useState(false);
 
   const handleConfirm = useCallback(() => {
+    setIsPropositionSubmitted(true);
     proposition && onConfirm(proposition);
   }, [onConfirm, proposition]);
 
@@ -45,6 +48,20 @@ function AnswerInput({ question, onConfirm, isLoadingFeedback }: Props) {
     isQuestionAnswered || isLoadingFeedback || !proposition;
   const isPropositionCorrect = isQuestionAnswered && question.answer?.isCorrect;
 
+  const borderColor = useMemo(() => {
+    if (!isQuestionAnswered || !isPropositionSubmitted) return "inherit";
+
+    return isPropositionSubmitted && isPropositionCorrect
+      ? theme.palette.success.main
+      : theme.palette.error.main;
+  }, [
+    isQuestionAnswered,
+    theme.palette.success.main,
+    theme.palette.error.main,
+    isPropositionSubmitted,
+    isPropositionCorrect,
+  ]);
+
   return (
     <Box className={classes.root}>
       <TextField
@@ -57,6 +74,14 @@ function AnswerInput({ question, onConfirm, isLoadingFeedback }: Props) {
         value={proposition}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-disabled fieldset": {
+              borderColor,
+              borderWidth: isPropositionSubmitted ? "2px" : "1px",
+            },
+          },
+        }}
       />
 
       {!isQuestionAnswered && (

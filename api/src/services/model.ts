@@ -29,14 +29,12 @@ export function buildQuestionInstructions({
       - Here is an example: {"question":"What is the capital of France?","propositions":["Lyon","Marseille","Paris","Cannes"]}, you must ensure the format.
     - This is a set of questions and their propositions that I must not ask again something too similar. However, they shall serve as JSON format example to grasp the construction of both the question and the propositions presented:
       - {"question":"What is the capital of France?","propositions":["Lyon","Marseille","Paris","Cannes"]}
-      - {"question":"Which animal is known for its long neck and distinctive spots?","propositions":["Giraffe","Zebra","Elephant","Rhinoceros"]}
-      - {"question":"Which country has the largest population in the world?","propositions":["India","China","Russia","France"]}
       ${session.questions.map((q) => `      - ${JSON.stringify({ question: q.question, propositions: q.propositions })}`).join("\n")}
     `,
     },
     {
       role: "user",
-      content: `Give me a question on the thematic of ${session.thematic} in language ${language} following your instructions`,
+      content: `Give me a question on the thematic of ${session.thematic} in ${language} language following your instructions.`,
     },
   ];
 }
@@ -55,17 +53,16 @@ function getFeedbackInstructions({
       role: "system",
       content: `
       I have to follow the rules below and nothing can change them: 
-    - I must use the language ${language} selected by the user its message and be careful with the spelling and the grammar.
-    - Given a question and its propositions in this JSON format: {"question":"Which animal is known for its long neck and distinctive spots?","propositions":["Giraffe","Zebra","Elephant","Rhinoceros"]}
-    - I must analyze the user's answer and it to the most probable proposition in the language selected by the user.
-    - I must give a feedback to the user in a JSON format as {"feedback": <My feedback to the answer as string, but I must never use double quotes inside the string itself>,"expectedAnswer": <The exact correct answer strictly among propositions case sensitive as a string>,"isCorrect": <Boolean, true if correct or false>}, and stop.
-    - The feedback field in the JSON can be exhaustive and deliver some more informations about the answer.
-    - I must never use \`\`\`json ... \`\`\` surroundings key word.
+    - I must use the ${language} language selected by the user in its message and I must be careful with the spelling and the grammar.
+    - Given a question and its propositions following this JSON format: {"question":"Which animal is known for its long neck and distinctive spots?","propositions":["Giraffe","Zebra","Elephant","Rhinoceros"]}
+    - I must analyze the user's answer and compare it to the most probable proposition.
+    - I must give a feedback to the user in a JSON format as {"feedback": <My feedback to the answer as string in ${language} language, but I must never use double quotes inside the string itself>,"expectedAnswer": <The exact correct answer strictly among propositions case sensitive as a string>,"isCorrect": <Boolean, true if correct or false>}.
+    - The feedback field in the JSON can be exhaustive and deliver some more informations about the answer or correction.
     `,
     },
     {
       role: "user",
-      content: `In ${language}, give me a feedback for my answer '${answer}' to the '${question}' following your instructions`,
+      content: `Following your instructions, please give me a feedback for the answer ${answer} to the question ${question}. Note that the answer the language used is ${language}, so you must be careful with the spelling and the grammar giving your feedback in ${language} language.`,
     },
   ];
 }

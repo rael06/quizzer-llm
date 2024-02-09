@@ -51,14 +51,14 @@ function QuizzPage() {
             onClick={goHome}
             color="secondary"
             variant="contained"
-            disabled={isLoadingQuestion}
+            disabled={isLoadingQuestion || isLoadingFeedback}
           >
             {dictionary.quizz.action.home}
           </Button>
           <Button
             onClick={askQuestion}
             variant="contained"
-            disabled={isLoadingQuestion}
+            disabled={isLoadingQuestion || isLoadingFeedback}
           >
             {dictionary.quizz.action.next}
           </Button>
