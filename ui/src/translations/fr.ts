@@ -1,6 +1,10 @@
 import { Dictionary } from "./Dictionary";
 
 export const frDictionary: Dictionary = {
+  global: {
+    error: "Désolé, une erreur est survenue, veuillez réessayer plus tard.",
+    home: "Accueil",
+  },
   header: {
     title: "Quizzer-llm",
     description:
@@ -15,7 +19,7 @@ export const frDictionary: Dictionary = {
     description1:
       "Passionné de quizz ? Explorez diverses thématiques ici. En l'absence de choix, un quizz général sera proposé. Bon Quizz ! 🎉",
     description2:
-      "Attention : les questions sont générées par un modèle de langage dans un langage français approximatif et peuvent ne pas être exactes. Elles ne doivent pas être considérées comme une source fiable.",
+      "Attention : les questions sont générées par un modèle de langage dans un français approximatif et peuvent ne pas être exactes. Elles ne doivent pas être considérées comme une source fiable.",
     description3:
       "La responsabilité de l'utilisation du site et des résultats générés ne peut être engagée.",
     description4:

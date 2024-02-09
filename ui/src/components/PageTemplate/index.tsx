@@ -1,18 +1,33 @@
 import { memo } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import classes from "./classes.module.css";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Footer from "../Footer";
 import Header from "../Header";
+import { ErrorBoundary } from "react-error-boundary";
+import { useLang } from "../../contexts/lang/context";
 
 function PageTemplate() {
+  const { dictionary } = useLang();
+
   return (
-    <Box id="page-template" className={classes.root}>
+    <Box className={classes.root}>
       <header>
         <Header />
       </header>
       <main>
-        <Outlet />
+        <ErrorBoundary
+          fallback={
+            <>
+              <Typography mb={2}>{dictionary.global.error}</Typography>
+              <Link to="/">
+                <Typography>{dictionary.global.home}</Typography>
+              </Link>
+            </>
+          }
+        >
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <footer>
         <Footer />

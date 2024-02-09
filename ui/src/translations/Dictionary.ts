@@ -1,4 +1,8 @@
 export type Dictionary = {
+  global: {
+    error: string;
+    home: string;
+  };
   header: {
     title: string;
     description: string;

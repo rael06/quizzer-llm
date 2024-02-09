@@ -1,3 +1,4 @@
+import assert from "assert";
 import { applicationApiUrl } from ".";
 import { Lang } from "../../contexts/lang/context";
 import { Question } from "../../models";
@@ -18,7 +19,10 @@ export async function fetchQuestion(lang: Lang): Promise<Question> {
       },
     },
   );
-  return await response.json();
+  const json = await response.json();
+  assert(response.ok, json.error);
+
+  return json;
 }
 
 export async function postAnswer(
@@ -38,5 +42,8 @@ export async function postAnswer(
       }),
     },
   );
-  return await response.json();
+  const json = await response.json();
+  assert(response.ok, json.error);
+
+  return json;
 }

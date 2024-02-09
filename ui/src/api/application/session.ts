@@ -1,3 +1,4 @@
+import assert from "assert";
 import { applicationApiUrl } from ".";
 import { Session } from "../../models";
 
@@ -8,7 +9,7 @@ export async function createSession({
   thematic: string;
   language: string;
 }): Promise<void> {
-  await fetch(`${applicationApiUrl}/sessions`, {
+  const response = await fetch(`${applicationApiUrl}/sessions`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -19,6 +20,8 @@ export async function createSession({
       language,
     }),
   });
+  const json = await response.json();
+  assert(response.ok, json.error);
 }
 
 export async function fetchSession(): Promise<Session> {
@@ -29,5 +32,8 @@ export async function fetchSession(): Promise<Session> {
       "Content-Type": "application/json",
     },
   });
-  return await response.json();
+  const json = await response.json();
+  assert(response.ok, json.error);
+
+  return json;
 }

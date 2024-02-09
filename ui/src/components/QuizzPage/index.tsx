@@ -17,7 +17,7 @@ function QuizzPage() {
   const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(false);
   const [isLoadingFeedback, setIsLoadingFeedback] = useState<boolean>(false);
 
-  const restart = useCallback(() => {
+  const goHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
 
@@ -25,26 +25,23 @@ function QuizzPage() {
     setIsLoadingQuestion(true);
     setQuestion(null);
 
-    try {
-      const data = await fetchQuestion(lang);
-      setQuestion(data);
-    } finally {
-      setIsLoadingQuestion(false);
-    }
-  }, [lang]);
+    fetchQuestion(lang)
+      .then((data) => setQuestion(data))
+      .catch((error) => error.message === "Session not found" && goHome())
+      .finally(() => setIsLoadingQuestion(false));
+  }, [lang, goHome]);
 
   useEffect(() => {
-    (async () => await askQuestion())();
+    askQuestion();
   }, [askQuestion]);
 
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const data = await fetchSession();
-      setSession(data);
-    })();
-  }, [question]);
+    fetchSession()
+      .then((data) => setSession(data))
+      .catch(() => goHome());
+  }, [question, goHome]);
 
   const score = useMemo(() => {
     return {
@@ -54,11 +51,11 @@ function QuizzPage() {
   }, [session?.questions]);
 
   const answerQuestion = useCallback(
-    async (proposition: string) => {
+    (proposition: string) => {
       setIsLoadingFeedback(true);
-      const data = await postAnswer(lang, proposition);
-      setQuestion(data);
-      setIsLoadingFeedback(false);
+      postAnswer(lang, proposition)
+        .then(setQuestion)
+        .then(() => setIsLoadingFeedback(false));
     },
     [lang],
   );
@@ -96,7 +93,7 @@ function QuizzPage() {
 
       <Box className={classes.actions}>
         <Button
-          onClick={restart}
+          onClick={goHome}
           color="secondary"
           variant="contained"
           disabled={isLoadingQuestion}

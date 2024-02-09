@@ -26,13 +26,14 @@ export function buildQuestionInstructions({
       - A field "propositions" equal to an array of strings (but you must never use double quotes inside the string itself) representing the possible answers having only a single one correct and the others are similar but wrong. The position of the right answer must be random.
       - It's very important to set a correct answer among the 4 propositions.
       - If none of the propositions seems to be a correct answer to the question, I must renew these propositions until there is only one correct answer among the 4 propositions.
-      - Here is an example: {"question":"Quelle est la capitale de la France ?","propositions":["Lyon","Marseille","Paris","Cannes"]}, you must ensure the format.
-    - I must speak in ${language}.
+      - Here is an example: {"question":"What is the capital of France?","propositions":["Lyon","Marseille","Paris","Cannes"]}, you must ensure the format.
+    - I must speak or translate in ${language}.
     - I must be careful with the spelling and the grammar.
     - I must never use \`\`\`json ... \`\`\` surroundings key word.
-    - This is a list of questions that you must never ask again or something too similar, but use them as examples to understand the format of the question and the propositions:
-      - {"question":"Quelle est la capitale de la France ?","propositions":["Lyon","Marseille","Paris","Cannes"]}
-      - {"question":"Quelle est le pays le plus peuplé du monde ?","propositions":["Inde","Chine","Russie","France"]}
+    - This is a set of questions and their propositions that I must not ask again something too similar. However, they shall serve as JSON format example to grasp the construction of both the question and the propositions presented:
+      - {"question":"What is the capital of France?","propositions":["Lyon","Marseille","Paris","Cannes"]}
+      - {"question":"Which animal is known for its long neck and distinctive spots?","propositions":["Giraffe","Zebra","Elephant","Rhinoceros"]}
+      - {"question":"Which country has the largest population in the world?","propositions":["India","China","Russia","France"]}
       ${session.questions.map((q) => `      - ${JSON.stringify({ question: q.question, propositions: q.propositions })}`).join("\n")}
     `,
     },
@@ -77,7 +78,7 @@ async function tryAskQuestion(
     completeModelQuestion += part.message.content;
     process.stdout.write(part.message.content);
   }
-  console.log("\n");
+  console.info("\n");
 
   const question: Question = {
     ...z
@@ -156,7 +157,7 @@ async function tryAnswerQuestion({
     completeFeedback += part.message.content;
     process.stdout.write(part.message.content);
   }
-  console.log("\n");
+  console.info("\n");
 
   const answeredQuestion: Question = {
     ...question,

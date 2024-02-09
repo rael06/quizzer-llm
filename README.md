@@ -3,6 +3,7 @@
 # Description
 
 This is an application using a LLM model to play a quizz.
+The application is deployed and available [here](https://quizzer-llm.rael-calitro.ovh/)
 
 - It uses the `ollama` package to communicate with the model.
 - It uses the mistral:instruct model which is light enough to run on a CPU.
