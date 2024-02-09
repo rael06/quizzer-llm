@@ -25,6 +25,12 @@ export type Dictionary = {
     feedback: {
       introExpectedAnswer: string;
     };
+    answerInput: {
+      input: {
+        label: string;
+        placeholder: string;
+      };
+    };
   };
   footer: {
     author: string;

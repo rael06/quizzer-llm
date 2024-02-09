@@ -21,6 +21,15 @@ function HomePage() {
     navigate("/quizz", { replace: true });
   }, [navigate]);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        startQuizz();
+      }
+    },
+    [startQuizz],
+  );
+
   return (
     <Box className={classes.root}>
       <TextField
@@ -28,6 +37,7 @@ function HomePage() {
         label={dictionary.home.input.label}
         placeholder={dictionary.home.input.placeholder}
         variant="outlined"
+        onKeyDown={handleKeyDown}
       />
 
       <Button onClick={startQuizz} variant="contained">

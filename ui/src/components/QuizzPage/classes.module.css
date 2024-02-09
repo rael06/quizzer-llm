@@ -1,18 +1,17 @@
 .root {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  justify-content: space-between;
   flex: 1;
 }
 
 .question {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 16px;
 }

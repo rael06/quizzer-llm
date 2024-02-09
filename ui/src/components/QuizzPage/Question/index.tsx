@@ -2,8 +2,9 @@ import { Box, LinearProgress, Typography } from "@mui/material";
 import { memo } from "react";
 import classes from "./classes.module.css";
 import { useQuestion } from "../../../contexts/question/context";
-import Propositions from "../../Propositions";
+import Propositions from "./Propositions";
 import assert from "assert";
+import AnswerInput from "./AnswerInput";
 
 function Question() {
   const { isLoadingQuestion, question, isLoadingFeedback, answerQuestion } =
@@ -28,6 +29,12 @@ function Question() {
           <Propositions
             question={question}
             onChoose={answerQuestion}
+            isLoadingFeedback={isLoadingFeedback}
+          />
+
+          <AnswerInput
+            question={question}
+            onConfirm={answerQuestion}
             isLoadingFeedback={isLoadingFeedback}
           />
         </>

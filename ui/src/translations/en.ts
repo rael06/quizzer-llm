@@ -36,6 +36,12 @@ export const enDictionary: Dictionary = {
     feedback: {
       introExpectedAnswer: "The expected answer was: ",
     },
+    answerInput: {
+      input: {
+        label: "Your answer",
+        placeholder: "Enter your answer..",
+      },
+    },
   },
   footer: {
     author: "2024, by Rael CALITRO: ",

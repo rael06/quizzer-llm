@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./classes.module.css";
 import { Session } from "../../models";
-import Feedback from "../Feedback";
+import Feedback from "./Feedback";
 import { fetchSession } from "../../api/application/session";
 import { useLang } from "../../contexts/lang/context";
 import { useQuestion } from "../../contexts/question/context";
@@ -51,9 +51,12 @@ function QuizzPage() {
         >
           <Question />
         </ErrorBoundary>
+        {question?.answer && (
+          <Box mt={4}>
+            <Feedback answer={question.answer} />
+          </Box>
+        )}
       </Box>
-
-      {question?.answer && <Feedback answer={question.answer} />}
 
       <Box className={classes.actions}>
         <Button

@@ -1,7 +1,7 @@
 import { Box, Button, useTheme } from "@mui/material";
 import { memo, useCallback } from "react";
 import classes from "./classes.module.css";
-import { Question } from "../../models";
+import { Question } from "../../../../models";
 import assert from "assert";
 
 type Props = {

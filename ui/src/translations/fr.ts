@@ -36,6 +36,12 @@ export const frDictionary: Dictionary = {
     feedback: {
       introExpectedAnswer: "La réponse attendue était : ",
     },
+    answerInput: {
+      input: {
+        label: "Votre réponse",
+        placeholder: "Entrez votre réponse..",
+      },
+    },
   },
   footer: {
     author: "2024, par Rael CALITRO : ",
