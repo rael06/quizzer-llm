@@ -12,6 +12,7 @@ export type QuestionContextType = {
   askQuestion: () => void;
   answerQuestion: (proposition: string) => void;
   isAnswered: boolean;
+  isRetrievingQuestionError: boolean;
 };
 
 const QuestionContext = createContext<QuestionContextType | null>(null);
@@ -20,16 +21,24 @@ function Provider({ children }: { children: React.ReactNode }) {
   const { lang } = useLang();
   const navigate = useNavigate();
   const [question, setQuestion] = useState<Question | null>(null);
-  const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(true);
+  const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(false);
   const [isLoadingFeedback, setIsLoadingFeedback] = useState<boolean>(false);
+  const [isRetrievingQuestionError, setIsRetrievingQuestionError] =
+    useState<boolean>(false);
 
   const askQuestion = useCallback(async () => {
+    setIsRetrievingQuestionError(false);
     setIsLoadingQuestion(true);
     setQuestion(null);
 
     fetchQuestion(lang)
       .then((data) => setQuestion(data))
-      .catch((error) => error.message === "Session not found" && navigate("/"))
+      .catch((error) => {
+        if (error.message === "Session not found") {
+          navigate("/");
+        }
+        setIsRetrievingQuestionError(true);
+      })
       .finally(() => setIsLoadingQuestion(false));
   }, [lang, navigate]);
 
@@ -52,6 +61,7 @@ function Provider({ children }: { children: React.ReactNode }) {
         askQuestion,
         answerQuestion,
         isAnswered: !!question?.answer,
+        isRetrievingQuestionError,
       }}
     >
       {children}

@@ -1,30 +1,29 @@
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { memo } from "react";
 import classes from "./classes.module.css";
 import { useQuestion } from "../../../contexts/question/context";
 import Propositions from "./Propositions";
-import assert from "assert";
 import AnswerInput from "./AnswerInput";
+import { useLang } from "../../../contexts/lang/context";
 
 function Question() {
-  const { isLoadingQuestion, question, isLoadingFeedback, answerQuestion } =
-    useQuestion();
+  const { dictionary } = useLang();
+  const {
+    question,
+    isLoadingFeedback,
+    answerQuestion,
+    isRetrievingQuestionError,
+  } = useQuestion();
 
-  assert(isLoadingQuestion || !!question, "Error retrieving question");
+  if (isRetrievingQuestionError) {
+    return <Typography>{dictionary.quizz.error}</Typography>;
+  }
 
   return (
     <Box className={classes.root}>
-      <LinearProgress
-        sx={{ visibility: isLoadingQuestion ? "visible" : "hidden" }}
-      />
-
       {question && (
         <>
           <Typography>{question.question}</Typography>
-
-          <LinearProgress
-            sx={{ visibility: isLoadingFeedback ? "visible" : "hidden" }}
-          />
 
           <Propositions
             question={question}
