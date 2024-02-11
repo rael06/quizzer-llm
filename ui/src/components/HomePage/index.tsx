@@ -51,6 +51,8 @@ function HomePage() {
       <Typography variant="body1">{dictionary.home.description3}</Typography>
 
       <Typography variant="body1">{dictionary.home.description4}</Typography>
+
+      <Typography variant="body1">{dictionary.home.description5}</Typography>
     </Box>
   );
 }

@@ -14,6 +14,7 @@ export type Dictionary = {
     description2: string;
     description3: string;
     description4: string;
+    description5: string;
   };
   quizz: {
     score: string;
