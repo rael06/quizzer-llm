@@ -44,15 +44,9 @@ function HomePage() {
         {dictionary.home.startQuizz}
       </Button>
 
-      <Typography variant="body1">{dictionary.home.description1}</Typography>
-
-      <Typography variant="body1">{dictionary.home.description2}</Typography>
-
-      <Typography variant="body1">{dictionary.home.description3}</Typography>
-
-      <Typography variant="body1">{dictionary.home.description4}</Typography>
-
-      <Typography variant="body1">{dictionary.home.description5}</Typography>
+      {dictionary.home.descriptions.map((description) => (
+        <Typography variant="body1">{description}</Typography>
+      ))}
     </Box>
   );
 }
