@@ -25,7 +25,7 @@ export const frDictionary: Dictionary = {
     description4:
       "L'efficacité du modèle est remarquable et mérite d'être partagée, cette efficacité est meilleure en anglais qu'en français. D'autres modèles LLM pourraient certainement être meilleurs, mais la machine hébergeant ce projet n'est pas assez puissante pour les supporter, également, la machine n'étant pas toujours disponible, le service peut-être interrompu.",
     description5:
-      "J'ai juste créé ce projet en peu de temps pour apprendre et partager. N'hésitez pas à consulter la documentation du code source. Pour toute question, contactez-moi 😇.",
+      "J'ai créé ce projet en peu de temps pour apprendre et partager. N'hésitez pas à consulter la documentation du code source. Pour toute question, contactez-moi 😇.",
   },
   quizz: {
     score: "Score : ",

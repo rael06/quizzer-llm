@@ -25,7 +25,7 @@ export const enDictionary: Dictionary = {
     description4:
       "The model's efficiency is remarkable and deserves to be shared; this efficiency is better in English than in French. Other LLM (Large Language Models) might certainly be better, but the machine hosting this project is not powerful enough to support them, also, as the machine is not always available, the service may be interrupted.",
     description5:
-      "I just created this project in a short amount of time to learn and share. Feel free to check out the source code documentation. For any questions, contact me 😇.",
+      "I've created this project in a short amount of time to learn and share. Feel free to check out the source code documentation. For any questions, contact me 😇.",
   },
   quizz: {
     score: "Score: ",
