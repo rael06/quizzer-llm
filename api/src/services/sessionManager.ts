@@ -1,7 +1,8 @@
 import { Session } from "../models";
 import { v4 as uuidv4 } from "uuid";
+import Cache from "node-cache";
 
-const sessions = new Map<string, Session>();
+const cache = new Cache({ stdTTL: 60 * 5, checkperiod: 60 * 1 });
 
 export function createSession(thematic: string): Session {
   const id = uuidv4();
@@ -11,14 +12,17 @@ export function createSession(thematic: string): Session {
     questions: [],
   };
 
-  sessions.set(id, session);
+  cache.set(id, session);
   return session;
 }
 
 export function getSession(id: string): Session | null {
-  return sessions.get(id) ?? null;
+  const session = cache.get<Session>(id) ?? null;
+  cache.set(id, session);
+
+  return session;
 }
 
 export function updateSession(session: Session) {
-  sessions.set(session.id, session);
+  cache.set(session.id, session);
 }
