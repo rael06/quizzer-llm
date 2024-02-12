@@ -203,6 +203,16 @@ async function tryAnswerQuestion({
     },
   };
 
+  assert(answeredQuestion.answer, "Answer not found");
+
+  if (
+    !answeredQuestion.answer.isCorrect &&
+    answeredQuestion.answer.expectedAnswer.toLowerCase() ===
+      answer.toLowerCase()
+  ) {
+    throw new Error("Model gave an incorrect feedback");
+  }
+
   return answeredQuestion;
 }
 
