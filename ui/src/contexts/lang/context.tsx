@@ -24,35 +24,33 @@ export type LangContextType = {
 const LangContext = createContext<LangContextType | null>(null);
 
 function Provider({ children }: { children: React.ReactNode }) {
-  const defaultLang = Lang.En;
-  const [lang, setLang] = useState<Lang>(defaultLang);
+  const [lang, setLang] = useState<Lang | null>(null);
 
-  const updateLang = useCallback(
-    (lang: string) => {
-      let validatedLang = defaultLang;
-      const langValidation = z.nativeEnum(Lang).safeParse(lang);
-      if (langValidation.success) {
-        validatedLang = langValidation.data;
-      }
+  const updateLang = useCallback((lang: string) => {
+    const langValidation = z.nativeEnum(Lang).safeParse(lang);
+    if (!langValidation.success) {
+      return;
+    }
 
-      localStorage.setItem("lang", lang);
-      document.documentElement.lang = validatedLang;
-      setLang(validatedLang);
-    },
-    [defaultLang],
-  );
+    const validatedLang = langValidation.data;
+    localStorage.setItem("lang", lang);
+    document.documentElement.lang = validatedLang;
+    setLang(validatedLang);
+  }, []);
 
   useEffect(() => {
     const lang = localStorage.getItem("lang");
-    if (lang) {
-      updateLang(lang);
-    }
+    updateLang(lang ?? Lang.En);
   }, [updateLang]);
 
   return (
-    <LangContext.Provider value={{ lang, updateLang }}>
-      {children}
-    </LangContext.Provider>
+    <>
+      {lang && (
+        <LangContext.Provider value={{ lang, updateLang }}>
+          {children}
+        </LangContext.Provider>
+      )}
+    </>
   );
 }
 
