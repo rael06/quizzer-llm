@@ -2,7 +2,7 @@ import { Session } from "../models";
 import { v4 as uuidv4 } from "uuid";
 import Cache from "node-cache";
 
-const cache = new Cache({ stdTTL: 60 * 5, checkperiod: 60 * 1 });
+const cache = new Cache({ stdTTL: 60 * 10, checkperiod: 60 * 1 });
 
 export function createSession(thematic: string): Session {
   const id = uuidv4();

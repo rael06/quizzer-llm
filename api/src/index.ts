@@ -64,6 +64,11 @@ server.post("/api/sessions", async (request, reply) => {
 });
 
 server.get("/api/session", async (request, reply) => {
+  const sessionId = request.cookies.sessionId;
+  if (!sessionId) {
+    return reply.status(400).send({ error: "SessionId is missing" });
+  }
+
   const session = getSession(request.cookies.sessionId);
   if (!session) {
     return reply.status(404).send({ error: "Session not found" });
@@ -73,8 +78,13 @@ server.get("/api/session", async (request, reply) => {
 });
 
 server.get("/api/model/question", async (request, reply) => {
-  const sessionId = getSession(request.cookies.sessionId)?.id;
+  const sessionId = request.cookies.sessionId;
   if (!sessionId) {
+    return reply.status(400).send({ error: "SessionId is missing" });
+  }
+
+  const session = getSession(request.cookies.sessionId);
+  if (!session) {
     return reply.status(400).send({ error: "Session not found" });
   }
 
@@ -84,7 +94,7 @@ server.get("/api/model/question", async (request, reply) => {
     })
     .parse(request.query).language;
 
-  const question = await askQuestion({ sessionId, language });
+  const question = await askQuestion({ sessionId: session.id, language });
 
   assert(question, "Error generating question");
 
