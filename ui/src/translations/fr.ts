@@ -23,7 +23,7 @@ export const frDictionary: Dictionary = {
 
       "La responsabilité de l'utilisation du site et des résultats générés ne peut être engagée.",
 
-      "L'efficacité du modèle est remarquable et mérite d'être partagée, cette efficacité est meilleure en anglais qu'en français. D'autres modèles LLM pourraient certainement être meilleurs, mais la machine hébergeant ce projet n'est pas assez puissante pour les supporter, également, la machine n'étant pas toujours disponible, le service peut être interrompu.",
+      "L'efficacité du modèle est remarquable et mérite d'être partagée, cette efficacité est meilleure en anglais qu'en français. D'autres modèles LLM, comme Mixtral 8x7B seraient meilleurs, mais la machine hébergeant ce projet n'est pas assez puissante pour les supporter, également, la machine n'étant pas toujours disponible, le service peut être interrompu.",
 
       "J'ai créé ce projet en peu de temps pour apprendre et partager. N'hésitez pas à consulter la documentation du code source. Pour toute question, contactez-moi 😇.",
     ],

@@ -23,7 +23,7 @@ export const enDictionary: Dictionary = {
 
       "Responsibility for the use of the site and the results generated cannot be engaged.",
 
-      "The model's efficiency is remarkable and deserves to be shared; this efficiency is better in English than in French. Other LLM (Large Language Models) might certainly be better, but the machine hosting this project is not powerful enough to support them, also, as the machine is not always available, the service may be interrupted.",
+      "The model's efficiency is remarkable and deserves to be shared; this efficiency is better in English than in French. Other LLM (Large Language Models), as Mixtral 8x7B, should be better, but the machine hosting this project is not powerful enough to support them, also, as the machine is not always available, the service may be interrupted.",
 
       "I've created this project in a short amount of time to learn and share. Feel free to check out the source code documentation. For any questions, contact me 😇.",
     ],
