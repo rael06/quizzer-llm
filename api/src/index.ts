@@ -77,7 +77,7 @@ server.get("/api/session", async (request, reply) => {
     return reply.status(404).send({ error: "Session not found" });
   }
 
-  return reply.send(session);
+  return reply.send(session.toView());
 });
 
 server.get("/api/model/question", async (request, reply) => {
@@ -106,7 +106,7 @@ server.get("/api/model/question", async (request, reply) => {
 
   assert(question, "Error generating question");
 
-  return reply.send(question);
+  return reply.send(question.toView());
 });
 
 server.post("/api/model/answer", async (request, reply) => {
@@ -129,15 +129,15 @@ server.post("/api/model/answer", async (request, reply) => {
     })
     .parse(request.body).answer;
 
-  const feedback = await AiService.getInstance().answerQuestion({
+  const answeredQuestion = await AiService.getInstance().answerQuestion({
     sessionId,
     language,
     answer,
   });
 
-  assert(feedback, "Error verifying answer");
+  assert(answeredQuestion, "Error verifying answer");
 
-  return reply.send(feedback);
+  return reply.send(answeredQuestion.toView());
 });
 
 server.get("/api/health", (request, reply) => {

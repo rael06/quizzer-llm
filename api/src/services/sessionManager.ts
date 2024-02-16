@@ -16,11 +16,7 @@ export default class SessionManager {
 
   public createSession(thematic: string): Session {
     const id = uuidv4();
-    const session: Session = {
-      id,
-      thematic,
-      questions: [],
-    };
+    const session = new Session(id, thematic, []);
 
     this.cache.set(id, session);
     return session;
