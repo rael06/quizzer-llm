@@ -13,10 +13,15 @@ function Question() {
     isLoadingFeedback,
     answerQuestion,
     isRetrievingQuestionError,
+    isRetrievingFeedbackError,
   } = useQuestion();
 
   if (isRetrievingQuestionError) {
-    return <Typography>{dictionary.quizz.error}</Typography>;
+    return <Typography>{dictionary.quizz.error.question}</Typography>;
+  }
+
+  if (isRetrievingFeedbackError) {
+    return <Typography>{dictionary.quizz.error.feedback}</Typography>;
   }
 
   return (

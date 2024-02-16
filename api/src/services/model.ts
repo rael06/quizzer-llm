@@ -44,10 +44,12 @@ export function buildQuestionInstructions({
 }
 
 function getFeedbackInstructions({
+  retryPrompt,
   question,
   answer,
   language,
 }: {
+  retryPrompt: string;
   question: Question;
   answer: string;
   language: string;
@@ -83,7 +85,7 @@ function getFeedbackInstructions({
     },
     {
       role: "user",
-      content: `Give me a feedback for my proposition: ${answer}, to answer the question: ${question.question} and its propositions:
+      content: `${retryPrompt}Give me a feedback for my proposition: ${answer}, to answer the question: ${question.question} and its propositions:
       ${question.propositions.map((p) => ` - ${p}\n`)}. Write it in a perfect ${language} with attention to spelling and grammar. Don't repeat the question in your feedback. Follow your instructions precisely.`,
     },
   ];
@@ -159,11 +161,13 @@ export async function askQuestion({
 
 async function tryAnswerQuestion({
   ollamaInstance,
+  retryPrompt = "",
   question,
   answer,
   language,
 }: {
   ollamaInstance: Ollama;
+  retryPrompt: string;
   question: Question;
   answer: string;
   language: string;
@@ -171,6 +175,7 @@ async function tryAnswerQuestion({
   const feedback = await ollamaInstance.chat({
     model: "mistral:instruct",
     messages: getFeedbackInstructions({
+      retryPrompt,
       question,
       answer,
       language,
@@ -210,7 +215,7 @@ async function tryAnswerQuestion({
     answeredQuestion.answer.expectedAnswer.toLowerCase() ===
       answer.toLowerCase()
   ) {
-    throw new Error("Model gave an incorrect feedback");
+    throw new Error("Model gave an incorrect expectedAnswer");
   }
 
   return answeredQuestion;
@@ -234,18 +239,20 @@ export async function answerQuestion({
   const ollamaInstance = await OllamaService.getInstance();
 
   let tries = 0;
-  let completeModelQuestion = "";
   let answeredQuestion: Question | null = null;
   do {
     tries++;
     try {
       answeredQuestion = await tryAnswerQuestion({
         ollamaInstance,
+        retryPrompt:
+          tries > 1
+            ? "Retry, ensuring your response format, and your EXPECTED_ANSWER. "
+            : "",
         question,
         answer,
         language,
       });
-      completeModelQuestion = answeredQuestion.question;
       break;
     } catch (e) {
       console.error(e);
@@ -260,39 +267,48 @@ export async function answerQuestion({
 }
 
 function transformQuestionToJsonStr(completeModelQuestion: string) {
-  const question = completeModelQuestion.split("<+>");
-  const questionPart = question[0].split("<=>");
-  const propositions = question[1].split("<=>")[0].split("|");
+  const regexp = /<=>(.+)<\+>(.+)\|(.+)\|(.+)\|(.+)<=>/m;
+  const match = completeModelQuestion.match(regexp);
+  assert(match, "Invalid question format");
 
-  const jsonStr = JSON.stringify({
-    question: questionPart[1],
-    propositions,
-  });
+  const [_, question, ...propositions] = match;
+
+  const validatedJson = z
+    .object({
+      question: z.string(),
+      propositions: z.array(z.string()),
+    })
+    .parse({ question, propositions });
+
+  const jsonStr = JSON.stringify(validatedJson);
 
   return jsonStr;
 }
 
 function transformFeedbackToJsonStr(completeFeedback: string) {
-  const feedback = completeFeedback.split("<+>");
-  const feedbackPart = feedback[0].split("<=>");
+  const regex = /<=>(.+)<\+>(.+)<\+>(.+)<=>/m;
+  const match = completeFeedback.match(regex);
+  assert(match, "Invalid feedback format");
+
+  const [_, feedback, expectedAnswer, isCorrectStr] = match;
 
   const json = {
-    feedback: feedbackPart[1],
-    expectedAnswer: feedback[1],
-    isCorrect: feedback[2].split("<=>")[0],
+    feedback,
+    expectedAnswer,
+    isCorrectStr: isCorrectStr,
   };
 
   const validatedJson = z
     .object({
       feedback: z.string(),
-      isCorrect: z.enum(["CORRECT", "INCORRECT"]),
+      isCorrectStr: z.enum(["CORRECT", "INCORRECT"]),
       expectedAnswer: z.string(),
     })
     .parse(json);
 
   const jsonStr = JSON.stringify({
     ...validatedJson,
-    isCorrect: validatedJson.isCorrect === "CORRECT",
+    isCorrect: validatedJson.isCorrectStr === "CORRECT",
   });
   return jsonStr;
 }

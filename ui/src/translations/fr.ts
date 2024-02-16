@@ -30,8 +30,12 @@ export const frDictionary: Dictionary = {
   },
   quizz: {
     score: "Score : ",
-    error:
-      "Désolé, la génération de question valide a echoué, veuillez passer à la question suivante.",
+    error: {
+      question:
+        "Désolé, la génération de question valide a echoué, veuillez passer à la question suivante.",
+      feedback:
+        "Désolé, la génération de feedback valide a echoué, veuillez passer à la question suivante.",
+    },
     action: {
       home: "Accueil",
       next: "Suivante",

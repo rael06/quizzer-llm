@@ -14,7 +14,10 @@ export type Dictionary = {
   };
   quizz: {
     score: string;
-    error: string;
+    error: {
+      question: string;
+      feedback: string;
+    };
     action: {
       home: string;
       next: string;

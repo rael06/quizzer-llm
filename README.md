@@ -42,7 +42,7 @@ REACT_APP_ENV=local # Environment variables for the UI: 'local' or 'production'
 # Installation
 
 - Clone the repository
-- Run `docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama`to start the ollama server (or `docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama` for NVidia GPU usage which will improve performances by far, see Documentation section below)
+- Run `docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama` to start the ollama server (or `docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama` for NVidia GPU usage which will improve performances by far, see Documentation section below)
 
 If you want to run the application via docker, you can skip the next steps until the "Run the application" section.
 

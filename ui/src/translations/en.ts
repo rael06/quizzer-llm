@@ -30,8 +30,12 @@ export const enDictionary: Dictionary = {
   },
   quizz: {
     score: "Score: ",
-    error:
-      "Sorry, the generation of a valid question has failed, please proceed to the next question.",
+    error: {
+      question:
+        "Sorry, the generation of a valid question has failed, please proceed to the next question.",
+      feedback:
+        "Sorry, the generation of a valid feedback has failed, please proceed to the next question.",
+    },
     action: {
       home: "Home",
       next: "Next",

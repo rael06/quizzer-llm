@@ -13,6 +13,7 @@ export type QuestionContextType = {
   answerQuestion: (proposition: string) => void;
   isAnswered: boolean;
   isRetrievingQuestionError: boolean;
+  isRetrievingFeedbackError: boolean;
 };
 
 const QuestionContext = createContext<QuestionContextType | null>(null);
@@ -24,6 +25,8 @@ function Provider({ children }: { children: React.ReactNode }) {
   const [isLoadingQuestion, setIsLoadingQuestion] = useState<boolean>(false);
   const [isLoadingFeedback, setIsLoadingFeedback] = useState<boolean>(false);
   const [isRetrievingQuestionError, setIsRetrievingQuestionError] =
+    useState<boolean>(false);
+  const [isRetrievingFeedbackError, setIsRetrievingFeedbackError] =
     useState<boolean>(false);
 
   const askQuestion = useCallback(async () => {
@@ -47,9 +50,16 @@ function Provider({ children }: { children: React.ReactNode }) {
       setIsLoadingFeedback(true);
       postAnswer(lang, proposition)
         .then(setQuestion)
-        .then(() => setIsLoadingFeedback(false));
+
+        .catch((error) => {
+          if (error.message === "Session not found") {
+            navigate("/");
+          }
+          setIsRetrievingFeedbackError(true);
+        })
+        .finally(() => setIsLoadingFeedback(false));
     },
-    [lang],
+    [lang, navigate],
   );
 
   return (
@@ -62,6 +72,7 @@ function Provider({ children }: { children: React.ReactNode }) {
         answerQuestion,
         isAnswered: !!question?.answer,
         isRetrievingQuestionError,
+        isRetrievingFeedbackError,
       }}
     >
       {children}
