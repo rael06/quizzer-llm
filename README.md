@@ -28,10 +28,10 @@ The application is deployed and available [here](https://quizzer-llm.rael-calitr
 
 ### Api:
 
-ENVIRONMENT=local # Environment variables for the UI: 'local' or 'production'
-HOST=localhost
-PORT=3099
-OLLAMA_API_URL=http://localhost:11434 # If using docker, the IP address of the container running the ollama server (i.e: 172.17.0.2)
+- ENVIRONMENT=local # Environment variables for the UI: 'local' or 'production'
+- HOST=localhost
+- PORT=3099
+- OLLAMA_API_URL=http://localhost:11434 # If using docker, the IP address of the container running the ollama server (i.e: 172.17.0.2)
 
 ### UI:
 
@@ -78,6 +78,7 @@ Otherwise:
 - [Ollama SDK](https://github.com/ollama/ollama-js)
 - [Ollama and docker](https://ollama.ai/blog/ollama-is-now-available-as-an-official-docker-image)
 - [Mistral:instruct model](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)
+- [Mistral models](https://docs.mistral.ai/models/)
 
 When sharing your proof of concept (POC) project publicly, it's indeed wise to explain the scope, design choices, and any shortcuts you took. This context can help others understand your intentions, the project's purpose, and its limitations. Here's a suggestion for how you might draft that section of your README:
 
