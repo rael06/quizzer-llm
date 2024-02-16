@@ -5,7 +5,7 @@ import fastifyCors from "@fastify/cors";
 import path from "path";
 import staticPlugin from "@fastify/static";
 import { createSession, getSession } from "./services/sessionManager";
-import { answerQuestion, askQuestion } from "./services/model";
+import { answerQuestion, askQuestion } from "./services/aiService";
 import { z } from "zod";
 import { fileURLToPath } from "url";
 import fs from "fs";
