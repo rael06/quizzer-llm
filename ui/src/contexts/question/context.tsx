@@ -31,6 +31,7 @@ function Provider({ children }: { children: React.ReactNode }) {
 
   const askQuestion = useCallback(async () => {
     setIsRetrievingQuestionError(false);
+    setIsRetrievingFeedbackError(false);
     setIsLoadingQuestion(true);
     setQuestion(null);
 

@@ -1,7 +1,7 @@
 import { Ollama } from "ollama";
 import { EnvVariables } from "../EnvVariables";
 
-export class OllamaService {
+export default class OllamaService {
   private static _instance: Ollama;
 
   private constructor() {}

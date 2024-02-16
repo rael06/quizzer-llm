@@ -4,13 +4,14 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyCors from "@fastify/cors";
 import path from "path";
 import staticPlugin from "@fastify/static";
-import { createSession, getSession } from "./services/sessionManager";
-import { answerQuestion, askQuestion } from "./services/aiService";
+
 import { z } from "zod";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import assert from "assert";
 import { EnvVariables } from "./EnvVariables";
+import AiService from "./services/AiService";
+import SessionManager from "./services/SessionManager";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -51,7 +52,7 @@ server.post("/api/sessions", async (request, reply) => {
     })
     .parse(request.body);
 
-  const session = createSession(thematic);
+  const session = SessionManager.getInstance().createSession(thematic);
   reply.setCookie("sessionId", session.id, {
     httpOnly: false,
     path: "/",
@@ -69,7 +70,9 @@ server.get("/api/session", async (request, reply) => {
     return reply.status(400).send({ error: "SessionId is missing" });
   }
 
-  const session = getSession(request.cookies.sessionId);
+  const session = SessionManager.getInstance().getSession(
+    request.cookies.sessionId,
+  );
   if (!session) {
     return reply.status(404).send({ error: "Session not found" });
   }
@@ -83,7 +86,9 @@ server.get("/api/model/question", async (request, reply) => {
     return reply.status(400).send({ error: "SessionId is missing" });
   }
 
-  const session = getSession(request.cookies.sessionId);
+  const session = SessionManager.getInstance().getSession(
+    request.cookies.sessionId,
+  );
   if (!session) {
     return reply.status(400).send({ error: "Session not found" });
   }
@@ -94,7 +99,10 @@ server.get("/api/model/question", async (request, reply) => {
     })
     .parse(request.query).language;
 
-  const question = await askQuestion({ sessionId: session.id, language });
+  const question = await AiService.getInstance().askQuestion({
+    sessionId: session.id,
+    language,
+  });
 
   assert(question, "Error generating question");
 
@@ -102,7 +110,9 @@ server.get("/api/model/question", async (request, reply) => {
 });
 
 server.post("/api/model/answer", async (request, reply) => {
-  const sessionId = getSession(request.cookies.sessionId)?.id;
+  const sessionId = SessionManager.getInstance().getSession(
+    request.cookies.sessionId,
+  )?.id;
   if (!sessionId) {
     return reply.status(400).send({ error: "Session not found" });
   }
@@ -119,7 +129,11 @@ server.post("/api/model/answer", async (request, reply) => {
     })
     .parse(request.body).answer;
 
-  const feedback = await answerQuestion({ sessionId, language, answer });
+  const feedback = await AiService.getInstance().answerQuestion({
+    sessionId,
+    language,
+    answer,
+  });
 
   assert(feedback, "Error verifying answer");
 

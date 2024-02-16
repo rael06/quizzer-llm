@@ -1,28 +1,39 @@
-import { Session } from "../models";
 import { v4 as uuidv4 } from "uuid";
 import Cache from "node-cache";
+import Session from "../models/Session";
 
-const cache = new Cache({ stdTTL: 60 * 10, checkperiod: 60 * 1 });
+export default class SessionManager {
+  private static _instance: SessionManager;
+  private constructor() {}
+  public static getInstance(): SessionManager {
+    if (!this._instance) {
+      this._instance = new SessionManager();
+    }
+    return this._instance;
+  }
 
-export function createSession(thematic: string): Session {
-  const id = uuidv4();
-  const session: Session = {
-    id,
-    thematic,
-    questions: [],
-  };
+  private readonly cache = new Cache({ stdTTL: 60 * 10, checkperiod: 60 * 1 });
 
-  cache.set(id, session);
-  return session;
-}
+  public createSession(thematic: string): Session {
+    const id = uuidv4();
+    const session: Session = {
+      id,
+      thematic,
+      questions: [],
+    };
 
-export function getSession(id: string): Session | null {
-  const session = cache.get<Session>(id) ?? null;
-  cache.set(id, session);
+    this.cache.set(id, session);
+    return session;
+  }
 
-  return session;
-}
+  public getSession(id: string): Session | null {
+    const session = this.cache.get<Session>(id) ?? null;
+    this.cache.set(id, session);
 
-export function updateSession(session: Session) {
-  cache.set(session.id, session);
+    return session;
+  }
+
+  public updateSession(session: Session) {
+    this.cache.set(session.id, session);
+  }
 }
