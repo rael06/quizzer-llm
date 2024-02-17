@@ -73,10 +73,6 @@ export default class AiService {
       tries++;
       try {
         answeredQuestion = await this.tryAnswerQuestion({
-          retryPrompt:
-            tries > 1
-              ? "Retry, ensuring your response format, and your EXPECTED_ANSWER. "
-              : "",
           question,
           userAnswer: answer,
           language,
@@ -103,6 +99,7 @@ export default class AiService {
       model: "mistral:instruct",
       messages: instructions,
       stream: true,
+      options: { stop: ["<<<"] },
     });
     let completeModelQuestion = "";
     for await (const part of modelQuestion) {
@@ -115,26 +112,25 @@ export default class AiService {
   }
 
   private async tryAnswerQuestion({
-    retryPrompt = "",
     question,
     userAnswer,
     language,
   }: {
-    retryPrompt: string;
     question: Question;
     userAnswer: string;
     language: string;
   }) {
     const ollamaInstance = await OllamaService.getInstance();
+    const messages = this.promptService.buildFeedbackInstructions({
+      question,
+      answer: userAnswer,
+      language,
+    });
     const feedback = await ollamaInstance.chat({
       model: "mistral:instruct",
-      messages: this.promptService.buildFeedbackInstructions({
-        retryInstruction: retryPrompt,
-        question,
-        answer: userAnswer,
-        language,
-      }),
+      messages,
       stream: true,
+      options: { stop: [PromptService.getInstance().endToken] },
     });
     let completeFeedback = "";
     for await (const part of feedback) {
