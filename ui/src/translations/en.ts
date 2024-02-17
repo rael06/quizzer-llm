@@ -40,9 +40,6 @@ export const enDictionary: Dictionary = {
       home: "Home",
       next: "Next",
     },
-    feedback: {
-      introExpectedAnswer: "The expected answer was: ",
-    },
     answerInput: {
       input: {
         label: "Your answer",

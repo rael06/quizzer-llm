@@ -50,13 +50,6 @@ export default class Answer {
     const validatedIsCorrect = validatedMatch.isCorrectStr === "CORRECT";
     const validatedExpectedAnswer = validatedMatch.expectedAnswer;
 
-    if (
-      !validatedIsCorrect &&
-      validatedExpectedAnswer.toLowerCase() === userAnswer.toLowerCase()
-    ) {
-      throw new Error("Model gave an incorrect expectedAnswer");
-    }
-
     return new Answer(
       userAnswer,
       validatedFeedback,
@@ -70,7 +63,6 @@ export default class Answer {
       answer: this._answer,
       feedback: this._feedback,
       isCorrect: this._isCorrect,
-      expectedAnswer: this._expectedAnswer,
     };
   }
 

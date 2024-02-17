@@ -33,7 +33,7 @@ export default class Question {
         question: z.string(),
         propositions: z.array(z.string()),
       })
-      .parse({ question, propositions });
+      .parse({ question, propositions: propositions.map((p) => p.trim()) });
 
     return new Question(
       uuidV4(),

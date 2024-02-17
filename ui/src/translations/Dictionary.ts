@@ -22,9 +22,6 @@ export type Dictionary = {
       home: string;
       next: string;
     };
-    feedback: {
-      introExpectedAnswer: string;
-    };
     answerInput: {
       input: {
         label: string;

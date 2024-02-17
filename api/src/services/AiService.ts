@@ -17,7 +17,7 @@ export default class AiService {
 
   private readonly sessionManager = SessionManager.getInstance();
   private readonly promptService = PromptService.getInstance();
-  private readonly maxRetries = 4;
+  private readonly maxRetries = 2;
 
   public async askQuestion({
     sessionId,
@@ -100,6 +100,7 @@ export default class AiService {
       messages: instructions,
       stream: true,
       options: { stop: ["<<<"] },
+      keep_alive: 0,
     });
     let completeModelQuestion = "";
     for await (const part of modelQuestion) {
@@ -131,6 +132,7 @@ export default class AiService {
       messages,
       stream: true,
       options: { stop: [PromptService.getInstance().endToken] },
+      keep_alive: 0,
     });
     let completeFeedback = "";
     for await (const part of feedback) {

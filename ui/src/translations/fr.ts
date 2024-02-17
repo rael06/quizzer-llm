@@ -40,9 +40,6 @@ export const frDictionary: Dictionary = {
       home: "Accueil",
       next: "Suivante",
     },
-    feedback: {
-      introExpectedAnswer: "La réponse attendue était : ",
-    },
     answerInput: {
       input: {
         label: "Votre réponse",
