@@ -10,8 +10,8 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import assert from "assert";
 import { EnvVariables } from "./EnvVariables";
-import AiService from "./services/AiService1";
-import SessionManager from "./services/SessionManager1";
+import AiService from "./services/AiService";
+import SessionManager from "./services/SessionManager";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
