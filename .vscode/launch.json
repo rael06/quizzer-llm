@@ -18,7 +18,12 @@
     {
       "name": "Run API",
       "request": "launch",
-      "runtimeArgs": ["run-script", "start:api", "debug"],
+      "runtimeArgs": [
+        "run-script",
+        "--preserve-symlinks",
+        "start:api",
+        "debug"
+      ],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
