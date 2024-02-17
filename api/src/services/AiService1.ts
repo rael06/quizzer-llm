@@ -1,8 +1,8 @@
 import OllamaService from "./OllamaService";
 import assert from "assert";
 import Question from "../models/Question";
-import PromptService from "./PromptService";
-import SessionManager from "./SessionManager";
+import PromptService from "./PromptService1";
+import SessionManager from "./SessionManager1";
 import Answer from "../models/Answer";
 
 export default class AiService {

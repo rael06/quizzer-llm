@@ -1,6 +1,6 @@
 import assert from "assert";
 import { z } from "zod";
-import PromptService from "../services/PromptService";
+import PromptService from "../services/PromptService1";
 
 export default class Answer {
   private _answer: string;

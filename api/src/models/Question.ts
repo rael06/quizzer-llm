@@ -2,7 +2,7 @@ import { z } from "zod";
 import Answer from "./Answer";
 import { v4 as uuidV4 } from "uuid";
 import assert from "assert";
-import PromptService from "../services/PromptService";
+import PromptService from "../services/PromptService1";
 
 export default class Question {
   private _id: string;
