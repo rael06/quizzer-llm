@@ -55,6 +55,7 @@ if (EnvVariables.UseBasicAuth) {
 }
 
 const publicPath = path.join(__dirname, "public");
+console.info("publicPath: ", publicPath);
 
 server.register(staticPlugin, {
   root: publicPath,
