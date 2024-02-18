@@ -16,10 +16,11 @@ function HomePage() {
   }, []);
 
   const startQuizz = useCallback(async () => {
-    const thematic = thematicInputRef.current?.value ?? "General";
+    const thematic =
+      thematicInputRef.current?.value || dictionary.home.defaultThematic;
     await createSession(thematic);
     navigate("/quizz", { replace: true });
-  }, [navigate]);
+  }, [dictionary.home.defaultThematic, navigate]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {

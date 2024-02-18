@@ -4,6 +4,7 @@ import Question from "../models/Question";
 import PromptService from "./PromptService";
 import SessionManager from "./SessionManager";
 import Answer from "../models/Answer";
+import Feedback from "../models/Feedback";
 
 export default class AiService {
   private static _instance: AiService;
@@ -29,15 +30,18 @@ export default class AiService {
     const session = this.sessionManager.getSession(sessionId);
     assert(session, "Session not found");
 
+    const messages = this.promptService.buildQuestionInstructions({
+      session,
+      language,
+    });
+
     // Retry until the model gives a correct question or the max retries is reached
     let tries = 0;
     let question: Question | null = null;
     do {
       tries++;
       try {
-        question = await this.fetchQuestionOrThrow(
-          this.promptService.buildQuestionInstructions({ session, language }),
-        );
+        question = await this.fetchQuestionOrThrow(messages);
         break;
       } catch (e) {
         console.error(e);
@@ -66,17 +70,21 @@ export default class AiService {
     let question = session.questions[session.questions.length - 1];
     assert(question, "Question not found");
 
+    const messages = this.promptService.buildFeedbackInstructions({
+      question,
+      answer,
+      language,
+    });
+
     // Retry until the model gives a correct feedback or the max retries is reached
     let tries = 0;
     let answeredQuestion: Question | null = null;
     do {
       tries++;
       try {
-        answeredQuestion = await this.fetchAnswerFeedbackOrThrow({
-          question,
-          userAnswer: answer,
-          language,
-        });
+        const feedback = await this.fetchAnswerFeedbackOrThrow(messages);
+        question.answer = Answer.build(answer, feedback);
+        answeredQuestion = question;
         break;
       } catch (e) {
         console.error(e);
@@ -112,26 +120,14 @@ export default class AiService {
     return Question.build(completeModelQuestion);
   }
 
-  private async fetchAnswerFeedbackOrThrow({
-    question,
-    userAnswer,
-    language,
-  }: {
-    question: Question;
-    userAnswer: string;
-    language: string;
-  }) {
+  private async fetchAnswerFeedbackOrThrow(
+    instructions: { role: "user" | "assistant" | "system"; content: string }[],
+  ) {
     const ollamaInstance = await OllamaService.getInstance();
-
-    const messages = this.promptService.buildFeedbackInstructions({
-      question,
-      answer: userAnswer,
-      language,
-    });
 
     const feedback = await ollamaInstance.chat({
       model: "mistral:instruct",
-      messages,
+      messages: instructions,
       stream: true,
       options: { stop: [PromptService.getInstance().endToken] },
     });
@@ -143,9 +139,6 @@ export default class AiService {
     }
     console.info("\n");
 
-    const answer = Answer.build(userAnswer, completeFeedback);
-
-    question.answer = answer;
-    return question;
+    return Feedback.parseFromAi(completeFeedback);
   }
 }

@@ -15,6 +15,7 @@ export const frDictionary: Dictionary = {
       label: "Thématique",
       placeholder: "Entrez une thématique",
     },
+    defaultThematic: "thématique général",
     startQuizz: "Commencer le quizz",
     descriptions: [
       "Passionné de quizz ? Explorez diverses thématiques ici. En l'absence de choix, un quizz général sera proposé. Bon Quizz ! 🎉",

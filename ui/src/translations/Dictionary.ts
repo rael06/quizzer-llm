@@ -9,6 +9,7 @@ export type Dictionary = {
   };
   home: {
     input: { label: string; placeholder: string };
+    defaultThematic: string;
     startQuizz: string;
     descriptions: string[];
   };

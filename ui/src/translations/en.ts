@@ -15,6 +15,7 @@ export const enDictionary: Dictionary = {
       label: "Thematic",
       placeholder: "Enter a thematic",
     },
+    defaultThematic: "general thematic",
     startQuizz: "Start the quiz",
     descriptions: [
       "Passionate about quizzes? Explore various themes here. In the absence of a thematic, a general quiz will be offered. Happy Quizzing! 🎉",
