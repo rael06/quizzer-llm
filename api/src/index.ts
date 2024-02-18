@@ -47,7 +47,6 @@ if (EnvVariables.UseBasicAuth) {
       return;
     },
     authenticate: true,
-    strictCredentials: true,
   });
 }
 
