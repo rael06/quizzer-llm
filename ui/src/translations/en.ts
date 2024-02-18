@@ -43,8 +43,8 @@ export const enDictionary: Dictionary = {
     },
     answerInput: {
       input: {
-        label: "Your answer",
-        placeholder: "Enter your answer..",
+        label: "Your custom answer",
+        placeholder: "Enter your custom answer..",
       },
     },
   },

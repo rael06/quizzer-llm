@@ -1,3 +1,4 @@
+import { ModelMessage } from "../models/ModelMessage";
 import Question from "../models/Question";
 import Session from "../models/Session";
 
@@ -20,7 +21,7 @@ export default class PromptService {
   }: {
     session: Session;
     language: string;
-  }): { role: "user" | "assistant" | "system"; content: string }[] {
+  }): ModelMessage[] {
     return [
       {
         role: "system",
@@ -62,7 +63,7 @@ export default class PromptService {
     question: Question;
     answer: string;
     language: string;
-  }): { role: "user" | "assistant" | "system"; content: string }[] {
+  }): ModelMessage[] {
     return [
       {
         role: "system",

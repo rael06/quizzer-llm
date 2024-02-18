@@ -1,10 +1,14 @@
-import OllamaService from "./OllamaService";
 import assert from "assert";
 import Question from "../models/Question";
 import PromptService from "./PromptService";
 import SessionManager from "./SessionManager";
 import Answer from "../models/Answer";
 import Feedback from "../models/Feedback";
+import ICompletionService from "./modelCompletions/ICompletionService";
+import OllamaModelCompletion from "./modelCompletions/OllamaModelCompletion";
+import { EnvVariables } from "../EnvVariables";
+import ApiModelCompletion from "./modelCompletions/ApiModelCompletion";
+import { ModelMessage } from "../models/ModelMessage";
 
 export default class AiService {
   private static _instance: AiService;
@@ -15,6 +19,11 @@ export default class AiService {
     }
     return this._instance;
   }
+
+  private readonly completionService: ICompletionService =
+    EnvVariables.ModelCommunicationType === "api"
+      ? ApiModelCompletion.getInstance()
+      : OllamaModelCompletion.getInstance();
 
   private readonly sessionManager = SessionManager.getInstance();
   private readonly promptService = PromptService.getInstance();
@@ -98,46 +107,16 @@ export default class AiService {
     return answeredQuestion;
   }
 
-  private async fetchQuestionOrThrow(
-    instructions: { role: "user" | "assistant" | "system"; content: string }[],
-  ) {
-    const ollamaInstance = await OllamaService.getInstance();
-
-    const modelQuestion = await ollamaInstance.chat({
-      model: "mistral:instruct",
-      messages: instructions,
-      stream: true,
-      options: { stop: [PromptService.getInstance().endToken] },
-    });
-
-    let completeModelQuestion = "";
-    for await (const part of modelQuestion) {
-      completeModelQuestion += part.message.content;
-      process.stdout.write(part.message.content);
-    }
-    console.info("\n");
+  private async fetchQuestionOrThrow(instructions: ModelMessage[]) {
+    const completeModelQuestion =
+      await this.completionService.complete(instructions);
 
     return Question.build(completeModelQuestion);
   }
 
-  private async fetchAnswerFeedbackOrThrow(
-    instructions: { role: "user" | "assistant" | "system"; content: string }[],
-  ) {
-    const ollamaInstance = await OllamaService.getInstance();
-
-    const feedback = await ollamaInstance.chat({
-      model: "mistral:instruct",
-      messages: instructions,
-      stream: true,
-      options: { stop: [PromptService.getInstance().endToken] },
-    });
-
-    let completeFeedback = "";
-    for await (const part of feedback) {
-      completeFeedback += part.message.content;
-      process.stdout.write(part.message.content);
-    }
-    console.info("\n");
+  private async fetchAnswerFeedbackOrThrow(instructions: ModelMessage[]) {
+    const completeFeedback =
+      await this.completionService.complete(instructions);
 
     return Feedback.parseFromAi(completeFeedback);
   }

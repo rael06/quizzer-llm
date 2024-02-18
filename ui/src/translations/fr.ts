@@ -43,8 +43,8 @@ export const frDictionary: Dictionary = {
     },
     answerInput: {
       input: {
-        label: "Votre réponse",
-        placeholder: "Entrez votre réponse..",
+        label: "Votre réponse personnalisée",
+        placeholder: "Entrez votre réponse personnalisée..",
       },
     },
   },
