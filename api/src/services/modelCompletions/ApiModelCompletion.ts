@@ -3,6 +3,7 @@ import { EnvVariables } from "../../EnvVariables";
 import ICompletionService from "./ICompletionService";
 import PromptService from "../PromptService";
 import { ModelMessage } from "../../models/ModelMessage";
+import fetch from "node-fetch";
 
 export default class ApiModelCompletion implements ICompletionService {
   private static _instance: ApiModelCompletion;
