@@ -10,7 +10,7 @@ type Props = {
 function Feedback({ answer }: Props) {
   return (
     <Box className={classes.root}>
-      <Typography>{answer.feedback}</Typography>
+      <Typography>{answer.feedback.value}</Typography>
     </Box>
   );
 }

@@ -101,9 +101,9 @@ export default class AiService {
   private async fetchQuestionOrThrow(
     instructions: { role: "user" | "assistant" | "system"; content: string }[],
   ) {
-    const ollamaInstance = await OllamaService.getInstance();
+    const modelInstance = await OllamaService.getInstance();
 
-    const modelQuestion = await ollamaInstance.chat({
+    const modelQuestion = await modelInstance.chat({
       model: "mistral:instruct",
       messages: instructions,
       stream: true,
@@ -123,9 +123,9 @@ export default class AiService {
   private async fetchAnswerFeedbackOrThrow(
     instructions: { role: "user" | "assistant" | "system"; content: string }[],
   ) {
-    const ollamaInstance = await OllamaService.getInstance();
+    const modelInstance = await OllamaService.getInstance();
 
-    const feedback = await ollamaInstance.chat({
+    const feedback = await modelInstance.chat({
       model: "mistral:instruct",
       messages: instructions,
       stream: true,

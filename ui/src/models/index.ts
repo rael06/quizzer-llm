@@ -1,7 +1,11 @@
+export type Feedback = {
+  value: string;
+  isCorrect: boolean;
+};
+
 export type Answer = {
   answer: string;
-  feedback: string;
-  isCorrect: boolean;
+  feedback: Feedback;
 };
 
 export type Question = {

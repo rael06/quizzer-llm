@@ -29,7 +29,7 @@ function Propositions({ question, onChoose, isLoadingFeedback }: Props) {
         const isPropositionSelected =
           isQuestionAnswered && question.answer?.answer === proposition;
         const isPropositionCorrect =
-          isQuestionAnswered && question.answer?.isCorrect;
+          isQuestionAnswered && question.answer?.feedback.isCorrect;
 
         const buttonColor =
           (!isPropositionSelected && "primary") ||

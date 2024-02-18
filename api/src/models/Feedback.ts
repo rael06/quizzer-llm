@@ -3,17 +3,13 @@ import { z } from "zod";
 import PromptService from "../services/PromptService";
 
 export default class Feedback {
-  private _message: string;
-  private _feedback: string;
+  private _modelMessage: string;
+  private _value: string;
   private _isCorrect: boolean;
 
-  private constructor(
-    modelMessage: string,
-    feedback: string,
-    isCorrect: boolean,
-  ) {
-    this._message = modelMessage;
-    this._feedback = feedback;
+  private constructor(modelMessage: string, value: string, isCorrect: boolean) {
+    this._modelMessage = modelMessage;
+    this._value = value;
     this._isCorrect = isCorrect;
   }
 
@@ -25,19 +21,19 @@ export default class Feedback {
     const match = message.match(regex);
     assert(match, "Invalid feedback format");
 
-    const [_, feedback, isCorrectStr] = match;
+    const [_, feedbackMessage, isCorrectStr] = match;
 
     const validatedMatch = z
       .object({
-        feedback: z.string(),
+        feedbackMessage: z.string(),
         isCorrectStr: z.enum(["CORRECT", "INCORRECT"]),
       })
       .parse({
-        feedback,
+        feedbackMessage,
         isCorrectStr,
       });
 
-    const validatedFeedback = validatedMatch.feedback;
+    const validatedFeedback = validatedMatch.feedbackMessage;
     const validatedIsCorrect = validatedMatch.isCorrectStr === "CORRECT";
 
     return new Feedback(message, validatedFeedback, validatedIsCorrect);
@@ -45,17 +41,17 @@ export default class Feedback {
 
   public toView() {
     return {
-      feedback: this._feedback,
+      value: this._value,
       isCorrect: this._isCorrect,
     };
   }
 
-  public get message(): string {
-    return this._message;
+  public get modelMessage(): string {
+    return this._modelMessage;
   }
 
   public get feedback(): string {
-    return this._feedback;
+    return this._value;
   }
 
   public get isCorrect(): boolean {

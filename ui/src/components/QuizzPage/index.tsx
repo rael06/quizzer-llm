@@ -33,7 +33,8 @@ function QuizzPage() {
 
   const score = useMemo(() => {
     return {
-      current: session?.questions.filter((q) => q.answer?.isCorrect).length,
+      current: session?.questions.filter((q) => q.answer?.feedback.isCorrect)
+        .length,
       max: session?.questions.filter((q) => q.answer).length,
     };
   }, [session?.questions]);

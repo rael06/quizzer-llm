@@ -46,7 +46,8 @@ function AnswerInput({ question, onConfirm, isLoadingFeedback }: Props) {
   const shouldDisableInput = isQuestionAnswered || isLoadingFeedback;
   const shouldDisableButton =
     isQuestionAnswered || isLoadingFeedback || !proposition;
-  const isPropositionCorrect = isQuestionAnswered && question.answer?.isCorrect;
+  const isPropositionCorrect =
+    isQuestionAnswered && question.answer?.feedback.isCorrect;
 
   const borderColor = useMemo(() => {
     if (!isQuestionAnswered || !isPropositionSubmitted) return "inherit";
