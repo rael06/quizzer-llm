@@ -4,6 +4,7 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyCors from "@fastify/cors";
 import path from "path";
 import staticPlugin from "@fastify/static";
+import fastifyBasicAuth from "@fastify/basic-auth";
 
 import { z } from "zod";
 import { fileURLToPath } from "url";
@@ -18,12 +19,13 @@ const __dirname = path.dirname(__filename);
 
 const server = fastify({
   logger: true,
-  ...(EnvVariables.Environment === "production" && {
-    https: {
-      key: fs.readFileSync(path.join(__dirname, "privkey.pem")),
-      cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
-    },
-  }),
+  ...(EnvVariables.Environment === "production" &&
+    EnvVariables.HttpsCertificate === "local" && {
+      https: {
+        key: fs.readFileSync(path.join(__dirname, "privkey.pem")),
+        cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
+      },
+    }),
 });
 server.register(fastifyCookie);
 
@@ -36,6 +38,26 @@ server.register(fastifyCors, {
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
+});
+
+if (EnvVariables.UseBasicAuth) {
+  server.register(fastifyBasicAuth, {
+    validate: async (username, password, req, reply) => {
+      if (
+        username !== EnvVariables.BasicAuthUsername ||
+        password !== EnvVariables.BasicAuthPassword
+      ) {
+        return new Error("Authentication error");
+      }
+      return;
+    },
+    authenticate: true,
+    strictCredentials: true,
+  });
+}
+
+server.after(() => {
+  server.addHook("onRequest", server.basicAuth);
 });
 
 const publicPath = path.join(__dirname, "public");

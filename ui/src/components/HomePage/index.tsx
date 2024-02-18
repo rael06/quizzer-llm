@@ -46,7 +46,9 @@ function HomePage() {
       </Button>
 
       {dictionary.home.descriptions.map((description) => (
-        <Typography variant="body1">{description}</Typography>
+        <Typography key={description} variant="body1">
+          {description}
+        </Typography>
       ))}
     </Box>
   );
