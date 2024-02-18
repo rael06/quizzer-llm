@@ -35,7 +35,7 @@ export default class AiService {
     do {
       tries++;
       try {
-        question = await this.tryAskQuestion(
+        question = await this.fetchQuestionOrThrow(
           this.promptService.buildQuestionInstructions({ session, language }),
         );
         break;
@@ -72,7 +72,7 @@ export default class AiService {
     do {
       tries++;
       try {
-        answeredQuestion = await this.tryAnswerQuestion({
+        answeredQuestion = await this.fetchAnswerFeedbackOrThrow({
           question,
           userAnswer: answer,
           language,
@@ -90,7 +90,7 @@ export default class AiService {
     return answeredQuestion;
   }
 
-  private async tryAskQuestion(
+  private async fetchQuestionOrThrow(
     instructions: { role: "user" | "assistant" | "system"; content: string }[],
   ) {
     const ollamaInstance = await OllamaService.getInstance();
@@ -101,6 +101,7 @@ export default class AiService {
       stream: true,
       options: { stop: [PromptService.getInstance().endToken] },
     });
+
     let completeModelQuestion = "";
     for await (const part of modelQuestion) {
       completeModelQuestion += part.message.content;
@@ -108,10 +109,10 @@ export default class AiService {
     }
     console.info("\n");
 
-    return Question.parseFromAi(completeModelQuestion);
+    return Question.build(completeModelQuestion);
   }
 
-  private async tryAnswerQuestion({
+  private async fetchAnswerFeedbackOrThrow({
     question,
     userAnswer,
     language,
@@ -121,17 +122,20 @@ export default class AiService {
     language: string;
   }) {
     const ollamaInstance = await OllamaService.getInstance();
+
     const messages = this.promptService.buildFeedbackInstructions({
       question,
       answer: userAnswer,
       language,
     });
+
     const feedback = await ollamaInstance.chat({
       model: "mistral:instruct",
       messages,
       stream: true,
       options: { stop: [PromptService.getInstance().endToken] },
     });
+
     let completeFeedback = "";
     for await (const part of feedback) {
       completeFeedback += part.message.content;
@@ -139,7 +143,7 @@ export default class AiService {
     }
     console.info("\n");
 
-    const answer = Answer.parseFeedbackFromAi(userAnswer, completeFeedback);
+    const answer = Answer.build(userAnswer, completeFeedback);
 
     question.answer = answer;
     return question;
