@@ -48,11 +48,11 @@ if (EnvVariables.UseBasicAuth) {
     },
     authenticate: true,
   });
-}
 
-server.after(() => {
-  server.addHook("onRequest", server.basicAuth);
-});
+  server.after(() => {
+    server.addHook("onRequest", server.basicAuth);
+  });
+}
 
 const publicPath = path.join(__dirname, "public");
 
