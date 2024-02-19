@@ -19,7 +19,6 @@ function HomePage() {
     const thematic =
       thematicInputRef.current?.value || dictionary.home.defaultThematic;
     await createSession(thematic);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     navigate("/quizz", { replace: true });
   }, [dictionary.home.defaultThematic, navigate]);
 
