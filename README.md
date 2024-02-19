@@ -26,16 +26,9 @@ The application is deployed and available [here](https://quizzer-llm.rael-calitr
 
 # Environment variables
 
-### Api:
+Be sure to set your .env files, one for API and one for UI.
 
-- ENVIRONMENT=local # Environment variables for the UI: 'local' or 'production'
-- HOST=localhost
-- PORT=3099
-- OLLAMA_API_URL=http://localhost:11434 # If using docker, the IP address of the container running the ollama server (i.e: 172.17.0.2)
-
-### UI:
-
-REACT_APP_ENV=local # Environment variables for the UI: 'local' or 'production'
+You can find the documented example .env.example for both API and UI in their respective folders.
 
 ---
 
