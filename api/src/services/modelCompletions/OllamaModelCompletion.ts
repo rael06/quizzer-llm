@@ -19,7 +19,7 @@ export default class OllamaModelCompletion implements ICompletionService {
     const ollamaInstance = await OllamaService.getInstance();
 
     const message = await ollamaInstance.chat({
-      model: "mistral:instruct",
+      model: "mistral:7b-instruct-v0.2-q4_0",
       messages,
       stream: true,
       options: { stop: [PromptService.getInstance().endToken] },
